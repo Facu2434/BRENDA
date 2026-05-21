@@ -38,57 +38,39 @@
 
     <style>
 
-        html,
-        body{
-            margin:0;
-            padding:0;
+        html{
             min-height:100%;
+            background:#F2ECE7 url("fondo.png") center top / cover no-repeat;
         }
 
         body{
-            position:relative;
+            min-height:100vh;
+
+            margin:0;
+            padding:0;
+
             color:#1A181C;
+
             overflow-x:hidden;
             overflow-y:auto;
+
+            background:transparent;
 
             -webkit-font-smoothing:antialiased;
             -moz-osx-font-smoothing:grayscale;
         }
 
-        /* CAPA DE FONDO REAL */
-        .background-layer{
-            position:fixed;
-            inset:0;
-
-            width:100vw;
-            height:100dvh;
-
-            background-image:url('fondo.png');
-            background-size:cover;
-            background-position:center center;
-            background-repeat:no-repeat;
-
-            z-index:-10;
-
-            pointer-events:none;
-        }
-
-        /* FIX MOBILE */
         @media (max-width:768px){
 
-            .background-layer{
+            html{
 
-                position:fixed;
-
-                width:100vw;
-                height:100vh;
+                background-image:url("fondo.png");
 
                 background-size:cover;
                 background-position:center top;
+                background-repeat:no-repeat;
 
-                transform:translateZ(0);
-                -webkit-transform:translateZ(0);
-
+                background-attachment:scroll;
             }
 
         }
@@ -129,14 +111,16 @@
         .option-card{
             transition:all .2s ease;
             position:relative;
-            background-color:rgba(255,255,255,.18);
-            backdrop-filter:blur(4px);
+
+            background-color:rgba(255,255,255,.15);
 
             border:1px solid #C2B9B5;
+
+            backdrop-filter:blur(4px);
         }
 
         .option-card:hover{
-            background-color:rgba(197,174,211,.18);
+            background-color:rgba(197,174,211,.15);
             border-color:#C5AED3;
         }
 
@@ -189,10 +173,6 @@
 
 <body class="w-full flex flex-col relative min-h-screen">
 
-    <!-- FONDO -->
-    <div class="background-layer"></div>
-
-    <!-- PROGRESS -->
     <div id="progress-container"
          class="fixed top-0 left-0 w-full h-[3px] bg-transparent z-50 opacity-0 transition-opacity duration-500">
 
@@ -202,7 +182,6 @@
 
     </div>
 
-    <!-- APP -->
     <main id="app-container"
           class="flex-1 w-full flex flex-col items-center justify-center pt-8 md:pt-12 pb-8 px-6 md:px-12 max-w-5xl mx-auto relative z-10 min-h-[90vh]">
     </main>
