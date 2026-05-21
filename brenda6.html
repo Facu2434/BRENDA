@@ -157,11 +157,20 @@
 
 <body class="w-full flex flex-col relative min-h-screen">
 
+   <picture id="bg-wrapper">
+
+    <source
+        media="(max-width: 768px) and (orientation: portrait)"
+        srcset="fondo-mobile.png"
+    >
+
     <img
         src="fondo.png"
         alt=""
         id="bg-image"
-    />
+    >
+
+</picture>
 
     <div id="progress-container"
          class="fixed top-0 left-0 w-full h-[3px] bg-transparent z-50 opacity-0 transition-opacity duration-500">
