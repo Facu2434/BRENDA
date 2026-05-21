@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caminos hacia adentro</title>
+    
+    <!-- Fuentes tipográficas: Lora (Serif elegante/editorial) e Inter (Sans minimalista) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuración personalizada de Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        clinical: {
+                            cream: '#F8F6F0',    /* Fondo principal cálido */
+                            slate: '#36333B',    /* Texto principal (grafito/violeta oscuro) */
+                            lavender: '#D8D0E3', /* Acentos y ondas */
+                            sage: '#C2CEC3',     /* Selecciones y ondas */
+                            taupe: '#8A8480',    /* Texto secundario */
+                            border: '#E8E5DF'    /* Bordes sutiles */
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Lora', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #F8F6F0;
+            color: #36333B;
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Ocultar scrollbars para mantener inmersión editorial */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E8E5DF;
+            border-radius: 4px;
+        }
+
+        /* Formas orgánicas de fondo (inspiradas en las referencias) */
+        .bg-shapes {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .shape-lavender {
+            position: absolute;
+            top: -5%; left: -5%;
+            width: 45vw; max-width: 500px;
+            opacity: 0.6;
+            color: #D8D0E3;
+        }
+
+        .shape-sage {
+            position: absolute;
+            bottom: -5%; right: -5%;
+            width: 50vw; max-width: 600px;
+            opacity: 0.5;
+            color: #C2CEC3;
+        }
+
+        .dots-pattern {
+            position: absolute;
+            width: 100px; height: 100px;
+            background-image: radial-gradient(#8A8480 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.3;
+        }
+
+        /* Transiciones suaves y editoriales */
+        .slide-container {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 1s ease-in-out, transform 1.2s ease-in-out;
+        }
+
+        .slide-exit {
+            opacity: 0;
+            transform: translateY(-10px);
+            pointer-events: none;
+        }
+
+        .slide-enter {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+
+        /* Cards orgánicas y terapéuticas */
+        .option-card {
+            transition: all 0.5s ease;
+            position: relative;
+            background-color: transparent;
+            border: 1px solid #E8E5DF;
+        }
+        
+        .option-card:hover {
+            background-color: rgba(216, 208, 227, 0.2); /* Lavanda muy suave */
+            border-color: #D8D0E3;
+        }
+
+        .option-card.selected {
+            background-color: #C2CEC3; /* Sage green */
+            border-color: #C2CEC3;
+            color: #36333B;
+            box-shadow: 0 4px 15px rgba(194, 206, 195, 0.4); /* Sombra suave sage */
+            transform: translateY(-1px);
+        }
+
+        /* Textarea como un diario de papel */
+        .intimate-textarea {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #E8E5DF;
+            resize: none;
+            transition: border-color 0.5s ease;
+            line-height: 1.6;
+            color: #5A5661;
+        }
+        
+        .intimate-textarea:focus {
+            outline: none;
+            border-bottom-color: #D8D0E3;
+        }
+        
+        .intimate-textarea::placeholder {
+            color: #A8A39D;
+            font-style: italic;
+        }
+
+        /* Botón de continuar */
+        .btn-fade {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s ease;
+        }
+
+        .btn-fade.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body class="w-full flex flex-col relative min-h-screen">
+
+    <!-- Formas orgánicas de fondo inspiradas en la identidad clínica -->
+    <div class="bg-shapes">
+        <!-- Onda Lavanda Superior Izquierda -->
+        <svg class="shape-lavender" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <path fill="currentColor" d="M38.1,-49.9C50.6,-38.7,62.8,-28.5,69.5,-14.8C76.2,-1.1,77.4,16.2,70.5,30.3C63.6,44.4,48.5,55.3,32.7,62.7C16.9,70.1,0.4,74,-15.1,71.2C-30.6,68.4,-45.1,59,-55.8,45.5C-66.5,32,-73.4,14.3,-72.5,-2.5C-71.6,-19.3,-62.9,-35.2,-49.8,-46.8C-36.7,-58.4,-19.2,-65.7,-3.1,-62C13,-58.3,25.6,-61.1,38.1,-49.9Z" transform="translate(100 100)" />
+        </svg>
+        
+        <!-- Onda Sage Inferior Derecha -->
+        <svg class="shape-sage" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <path fill="currentColor" d="M47.7,-57.2C60.3,-45.9,67.8,-28.9,70.7,-11.1C73.6,6.7,71.9,25.2,62.1,39.6C52.3,54,34.4,64.2,16.2,68.1C-2,72,-20.5,69.5,-36.8,60.8C-53.1,52.1,-67.2,37.2,-73.4,19.3C-79.6,1.4,-77.9,-19.5,-68.1,-35.1C-58.3,-50.7,-40.4,-61,-23.7,-64.1C-7,-67.2,8.5,-63.1,23.3,-60.1C38.1,-57.1,47.7,-57.2,47.7,-57.2Z" transform="translate(100 100) scale(1.1)" />
+        </svg>
+
+        <!-- Puntos decorativos -->
+        <div class="dots-pattern" style="top: 15%; right: 10%;"></div>
+        <div class="dots-pattern" style="bottom: 20%; left: 8%;"></div>
+    </div>
+
+    <!-- Barra de progreso delicada -->
+    <div id="progress-container" class="fixed top-0 left-0 w-full h-[3px] bg-transparent z-50 opacity-0 transition-opacity duration-1000">
+        <div id="progress-bar" class="h-full bg-clinical-sage w-0 transition-all duration-1000 ease-in-out"></div>
+    </div>
+
+    <main id="app-container" class="flex-1 w-full flex flex-col items-center pt-16 md:pt-24 pb-20 px-6 md:px-10 max-w-2xl mx-auto relative z-10">
+        <!-- El contenido se inyecta vía JS aquí -->
+    </main>
+
+    <script>
+        // --- Separador decorativo reutilizable (Línea - Corazón - Línea) ---
+        const getSeparatorHtml = () => `
+            <div class="flex items-center justify-center space-x-4 my-8 md:my-10 opacity-70">
+                <div class="h-[1px] w-16 bg-clinical-taupe/30"></div>
+                <svg class="w-4 h-4 text-clinical-taupe/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                <div class="h-[1px] w-16 bg-clinical-taupe/30"></div>
+            </div>
+        `;
+
+        const experienceFlow = [
+            {
+                type: 'intro',
+                title: 'Caminos hacia adentro',
+                welcome: 'Un espacio seguro y confidencial para observar la forma en que habitamos nuestras emociones y vínculos.',
+                notes: [
+                    'Completamente anónimo.',
+                    'No hay respuestas correctas.',
+                    'Tomate el tiempo que necesites.'
+                ],
+            },
+            {
+                type: 'question',
+                id: 'q_crianza_1',
+                block: 'Crianza y mandatos',
+                question: '¿Qué mensajes sentís que más marcaron tu forma de vivir la masculinidad?',
+                multiple: true,
+                options: [
+                    'Los hombres no lloran',
+                    'Tenés que poder solo',
+                    'Mostrar emociones es debilidad',
+                    'El hombre tiene que sostener todo',
+                    'Otro'
+                ]
+            },
+            {
+                type: 'question',
+                id: 'q_crianza_2',
+                block: 'Crianza y mandatos',
+                question: '¿En qué área sentís más presión por sostener o rendir?',
+                multiple: false,
+                options: [
+                    'Trabajo',
+                    'Economía',
+                    'Familia',
+                    'Pareja',
+                    'Salud',
+                    'Expectativas personales'
+                ]
+            },
+            {
+                type: 'transition',
+                text: 'A veces, cargar con las expectativas ajenas nos aleja de la vida que queremos.'
+            },
+            {
+                type: 'question',
+                id: 'q_miedos_1',
+                block: 'Miedos',
+                question: '¿Qué miedo aparece más seguido en tu vida cotidiana?',
+                multiple: false,
+                options: [
+                    'Fracasar',
+                    'Quedarme solo',
+                    'Perder el control',
+                    'Decepcionar a otros',
+                    'No saber manejar conflictos'
+                ]
+            },
+            {
+                type: 'question',
+                id: 'q_miedos_2',
+                block: 'Miedos',
+                question: '¿Qué hacés normalmente cuando algo emocional te supera?',
+                multiple: true,
+                options: [
+                    'Me aislo',
+                    'Me distraigo',
+                    'Me enojo',
+                    'Sigo funcionando como si nada',
+                    'Busco hablarlo'
+                ]
+            },
+            {
+                type: 'transition',
+                text: 'Evitar lo que sentimos puede darnos alivio temporal, pero los vínculos son el espejo donde más nos reflejamos.'
+            },
+            {
+                type: 'question',
+                id: 'q_vinculos_1',
+                block: 'Vínculos',
+                question: '¿Qué suele costarte más en tus relaciones?',
+                multiple: true,
+                options: [
+                    'Expresar emociones',
+                    'Pedir ayuda',
+                    'Poner límites',
+                    'Escuchar sin intentar resolver',
+                    'Afrontar conflictos'
+                ]
+            },
+            {
+                type: 'question',
+                id: 'q_vinculos_2',
+                block: 'Vínculos',
+                question: '¿Cómo reaccionás frente a conversaciones incómodas?',
+                multiple: false,
+                options: [
+                    'Las evito',
+                    'Cambio de tema',
+                    'Me cierro',
+                    'Exploto',
+                    'Intento hablarlas'
+                ]
+            },
+            {
+                type: 'transition',
+                text: 'Reconocer nuestra vulnerabilidad es el primer paso para poder habitarla con amabilidad.'
+            },
+            {
+                type: 'question',
+                id: 'q_emocional_1',
+                block: 'Mundo emocional',
+                question: '¿Qué emoción sentís más difícil de expresar?',
+                multiple: false,
+                options: [
+                    'Tristeza',
+                    'Miedo',
+                    'Afecto',
+                    'Culpa',
+                    'Vulnerabilidad'
+                ]
+            },
+            {
+                type: 'question',
+                id: 'q_emocional_2',
+                block: 'Mundo emocional',
+                question: '¿Qué hacés con lo que sentís cuando no sabés cómo expresarlo?',
+                multiple: true,
+                options: [
+                    'Lo guardo',
+                    'Me desconecto',
+                    'Trabajo más',
+                    'Me enojo',
+                    'Intento escribir o hablar'
+                ]
+            },
+            {
+                type: 'outro'
+            }
+        ];
+
+        let currentIndex = 0;
+        let responses = {};
+        let totalQuestions = experienceFlow.filter(step => step.type === 'question').length;
+
+        const appContainer = document.getElementById('app-container');
+        const progressContainer = document.getElementById('progress-container');
+        const progressBar = document.getElementById('progress-bar');
+
+        async function navigateTo(newIndex) {
+            if (newIndex < 0 || newIndex >= experienceFlow.length) return;
+
+            const currentContent = document.getElementById('slide-content');
+            if (currentContent) {
+                currentContent.classList.add('slide-exit');
+                await new Promise(resolve => setTimeout(resolve, 800)); // Pausa más suave y editorial
+            }
+
+            currentIndex = newIndex;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            renderCurrentStep();
+            updateProgress();
+
+            const newContent = document.getElementById('slide-content');
+            newContent.classList.add('slide-enter');
+            void newContent.offsetWidth; 
+            newContent.classList.remove('slide-enter');
+
+            // Si llegamos al final, disparamos el envío silencioso de datos
+            if (experienceFlow[currentIndex].type === 'outro') {
+                sendDataToBackendSilently();
+            }
+        }
+
+        function updateProgress() {
+            const currentStep = experienceFlow[currentIndex];
+            if (currentStep.type === 'intro' || currentStep.type === 'outro') {
+                progressContainer.style.opacity = '0';
+                return;
+            }
+            progressContainer.style.opacity = '1';
+            let questionsSeen = 0;
+            for (let i = 0; i <= currentIndex; i++) {
+                if (experienceFlow[i].type === 'question') questionsSeen++;
+            }
+            const percentage = (questionsSeen / totalQuestions) * 100;
+            progressBar.style.width = `${percentage}%`;
+        }
+
+        function buildIntro(data) {
+            return `
+                <div id="slide-content" class="slide-container w-full flex flex-col justify-center items-center text-center mt-6 md:mt-12">
+                    <h1 class="font-serif text-3xl md:text-5xl text-clinical-slate mb-4 font-medium tracking-tight">
+                        ${data.title}
+                    </h1>
+                    
+                    ${getSeparatorHtml()}
+
+                    <p class="font-serif italic text-lg md:text-xl text-clinical-taupe mb-10 max-w-md font-light leading-relaxed">
+                        ${data.welcome}
+                    </p>
+                    
+                    <div class="flex flex-col space-y-2 mb-16 text-sm text-clinical-taupe/70 font-sans">
+                        ${data.notes.map(note => `<span>${note}</span>`).join('')}
+                    </div>
+
+                    <button onclick="navigateTo(currentIndex + 1)" class="group text-clinical-slate hover:text-clinical-taupe transition-colors duration-500 font-sans tracking-[0.2em] uppercase text-xs font-medium">
+                        Comenzar recorrido
+                        <span class="block w-0 group-hover:w-full h-[1px] bg-clinical-taupe transition-all duration-500 mt-2 mx-auto"></span>
+                    </button>
+                </div>
+            `;
+        }
+
+        function buildQuestion(data) {
+            const savedState = responses[data.id] || { selected: [], detail: '' };
+            const hasSelection = savedState.selected.length > 0;
+            const btnVisibleClass = hasSelection ? 'visible' : '';
+            
+            const selectionHint = data.multiple ? '<span class="block text-clinical-taupe/60 text-xs font-sans mt-3 font-normal tracking-normal">(podés seleccionar varias opciones)</span>' : '';
+
+            const optionsHtml = data.options.map(opt => {
+                const isSelected = savedState.selected.includes(opt);
+                const selectedClass = isSelected ? 'selected' : '';
+                return `
+                    <div onclick="selectOption('${data.id}', '${opt}', ${data.multiple})" 
+                         class="option-card ${selectedClass} w-full py-4 px-5 rounded-xl cursor-pointer flex items-center justify-center text-center">
+                        <span class="font-sans text-sm md:text-base transition-colors font-medium">${opt}</span>
+                    </div>
+                `;
+            }).join('');
+
+            return `
+                <div id="slide-content" class="slide-container w-full flex flex-col w-full max-w-xl mx-auto">
+                    
+                    <div class="mb-10 text-center mt-2 md:mt-6">
+                        <span class="block font-sans text-xs uppercase tracking-[0.2em] text-clinical-lavender mb-6 font-medium">
+                            ${data.block}
+                        </span>
+                        <h2 class="font-serif text-2xl md:text-3xl text-clinical-slate leading-snug font-medium">
+                            ${data.question}
+                            ${selectionHint}
+                        </h2>
+                    </div>
+
+                    <div id="options-${data.id}" class="flex flex-col gap-3 w-full mb-10">
+                        ${optionsHtml}
+                    </div>
+
+                    <div class="w-full mb-12">
+                        <textarea id="detail-${data.id}" 
+                            class="intimate-textarea w-full py-3 text-sm font-sans" 
+                            rows="1"
+                            placeholder="Espacio para profundizar o anotar algo más..."
+                            oninput="autoResizeTextarea(this); updateDetail('${data.id}', this.value)"
+                        >${savedState.detail}</textarea>
+                    </div>
+
+                    <div class="flex items-center justify-between mt-4">
+                        <button onclick="navigateTo(currentIndex - 1)" class="text-clinical-taupe hover:text-clinical-slate text-xs uppercase tracking-[0.15em] transition-colors font-medium">
+                            Volver
+                        </button>
+                        
+                        <button id="btn-continue-${data.id}" onclick="navigateTo(currentIndex + 1)" class="btn-fade ${btnVisibleClass} text-clinical-slate hover:text-clinical-taupe text-xs uppercase tracking-[0.15em] transition-colors font-medium">
+                            Siguiente
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function buildTransition(data) {
+            // Dividir la frase si es muy larga para darle más ritmo poético
+            const parts = data.text.split(', pero ');
+            let textHtml = `<p class="font-serif text-2xl md:text-3xl text-clinical-slate font-medium leading-relaxed max-w-lg mx-auto">`;
+            
+            if (parts.length > 1) {
+                textHtml += `${parts[0]}...<br><span class="italic text-clinical-taupe font-light block mt-4">${parts[1]}</span>`;
+            } else {
+                textHtml += data.text;
+            }
+            textHtml += `</p>`;
+
+            return `
+                <div id="slide-content" class="slide-container w-full flex flex-col justify-center items-center text-center mt-16 md:mt-24">
+                    
+                    ${getSeparatorHtml()}
+                    
+                    <div class="my-8">
+                        ${textHtml}
+                    </div>
+                    
+                    ${getSeparatorHtml()}
+
+                    <button onclick="navigateTo(currentIndex + 1)" class="mt-10 text-clinical-taupe hover:text-clinical-slate text-xs uppercase tracking-[0.2em] transition-colors duration-500 font-medium">
+                        Continuar
+                    </button>
+                </div>
+            `;
+        }
+
+        function buildOutro() {
+            return `
+                <div id="slide-content" class="slide-container w-full flex flex-col justify-center items-center text-center mt-12 md:mt-24">
+                    
+                    <svg class="w-10 h-10 text-clinical-lavender mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+
+                    <h2 class="font-serif text-3xl md:text-4xl text-clinical-slate mb-6 font-medium">
+                        Gracias por este espacio.
+                    </h2>
+                    
+                    <p class="font-serif italic text-lg text-clinical-taupe mb-16 max-w-sm font-light leading-relaxed">
+                        Mirar hacia adentro es un acto de valentía y el primer paso hacia una vida más conectada con lo que valoramos.
+                    </p>
+
+                    <div class="flex flex-col items-center">
+                        <button onclick="resetExperience()" class="group text-clinical-taupe hover:text-clinical-slate transition-colors duration-500 font-sans tracking-[0.15em] uppercase text-xs font-medium">
+                            Volver al inicio
+                            <span class="block w-0 group-hover:w-full h-[1px] bg-clinical-taupe transition-all duration-500 mt-2 mx-auto"></span>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderCurrentStep() {
+            const step = experienceFlow[currentIndex];
+            let html = '';
+
+            switch (step.type) {
+                case 'intro': html = buildIntro(step); break;
+                case 'question': html = buildQuestion(step); break;
+                case 'transition': html = buildTransition(step); break;
+                case 'outro': html = buildOutro(); break;
+            }
+
+            appContainer.innerHTML = html;
+            const textareas = appContainer.querySelectorAll('textarea');
+            textareas.forEach(ta => autoResizeTextarea(ta));
+        }
+
+        window.selectOption = function(questionId, optionText, isMultiple) {
+            if (!responses[questionId]) {
+                responses[questionId] = { selected: [], detail: '' };
+            }
+
+            let currentSelection = responses[questionId].selected;
+
+            if (isMultiple) {
+                if (currentSelection.includes(optionText)) {
+                    currentSelection = currentSelection.filter(item => item !== optionText);
+                } else {
+                    currentSelection.push(optionText);
+                }
+            } else {
+                currentSelection = [optionText];
+            }
+
+            responses[questionId].selected = currentSelection;
+            renderCurrentStep();
+        };
+
+        window.updateDetail = function(questionId, text) {
+            if (!responses[questionId]) {
+                responses[questionId] = { selected: [], detail: '' };
+            }
+            responses[questionId].detail = text;
+        };
+
+        window.autoResizeTextarea = function(element) {
+            element.style.height = 'auto';
+            element.style.height = (element.scrollHeight) + 'px';
+        };
+
+        // --- Arquitectura de envío de datos invisible (Google Sheets / Webhook) ---
+        window.sendDataToBackendSilently = async function() {
+            const exportData = {
+                fecha: new Date().toISOString(),
+                respuestas: []
+            };
+
+            experienceFlow.forEach(step => {
+                if (step.type === 'question' && responses[step.id]) {
+                    exportData.respuestas.push({
+                        id_pregunta: step.id,
+                        bloque: step.block,
+                        pregunta: step.question,
+                        seleccion: responses[step.id].selected.join(' | '), 
+                        notas: responses[step.id].detail || ""
+                    });
+                }
+            });
+
+            // LOG DE CONTROL (Solo visible en consola para debug)
+            console.log("Datos listos para enviar al servidor:", exportData);
+
+            /* ========================================================================
+            INSTRUCCIONES PARA CONECTAR GOOGLE SHEETS / APPS SCRIPT
+            ========================================================================
+            1. Creá un Google Apps Script con una función doPost(e)
+            2. Desplegá el script como Aplicación Web (con acceso "Cualquier persona")
+            3. Pegá la URL generada en la variable webhookUrl
+            4. Descomentá el bloque try-catch de abajo.
+            */
+            
+            /*
+            try {
+                // Reemplazar con la URL real de tu Apps Script / Webhook (Make, Zapier)
+                const webhookUrl = "TU_URL_DE_GOOGLE_APPS_SCRIPT_AQUI"; 
+                
+                await fetch(webhookUrl, {
+                    method: "POST",
+                    mode: "no-cors", // Fundamental para evitar errores de CORS con Apps Script simple
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(exportData)
+                });
+                
+                console.log("Envío exitoso y silencioso.");
+            } catch (error) {
+                console.error("Error en el envío silencioso: ", error);
+            }
+            */
+        };
+
+        window.resetExperience = async function() {
+            responses = {};
+            await navigateTo(0);
+        };
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCurrentStep();
+        });
+
+    </script>
+</body>
+</html>
