@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caminos hacia adentro</title>
+    
+    <!-- Fuentes tipográficas: Lora (Serif elegante/editorial) e Inter (Sans minimalista) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuración personalizada de Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        clinical: {
+                            cream: '#F2ECE7',    /* Fondo pastel exacto de la imagen */
+                            slate: '#2D2A32',    /* Texto principal más oscuro para legibilidad */
+                            lavender: '#C5AED3', /* Lavanda de la esquina superior */
+                            sage: '#AABCB5',     /* Verde salvia de la esquina inferior */
+                            taupe: '#6D676E',    /* Texto secundario y labels con buen contraste */
+                            border: '#D9D0CD',   /* Bordes más definidos pero suaves */
+                            selected: '#D5DFDA'  /* Fondo sutil para card seleccionada */
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Lora', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #F2ECE7;
+            color: #2D2A32;
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Ocultar scrollbars para mantener inmersión editorial */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D9D0CD;
+            border-radius: 4px;
+        }
+
+        /* Formas orgánicas calcadas de la referencia */
+        .bg-shapes {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        /* Lavanda top-left */
+        .shape-lavender {
+            position: absolute;
+            top: -2%; left: -2%;
+            width: 40vw; max-width: 450px;
+            color: #C5AED3;
+            opacity: 0.85;
+        }
+
+        /* Salvia bottom-right */
+        .shape-sage {
+            position: absolute;
+            bottom: -5%; right: -5%;
+            width: 45vw; max-width: 500px;
+            color: #AABCB5;
+            opacity: 0.85;
+        }
+
+        /* Hojas botánicas laterales (estilo referencia) */
+        .botanical-branch {
+            position: absolute;
+            top: 35%; left: 0%;
+            width: 120px;
+            color: #8D998D; /* Verde muy sutil y agrisado */
+            opacity: 0.5;
+        }
+
+        /* Puntos decorativos */
+        .dots-pattern {
+            position: absolute;
+            width: 80px; height: 80px;
+            background-image: radial-gradient(#8C948F 2px, transparent 2px);
+            background-size: 24px 24px;
+            opacity: 0.4;
+        }
+
+        /* Transiciones aceleradas para mejor ritmo (0.5s en lugar de 1s) */
+        .slide-container {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.5s ease-in-out, transform 0.6s ease-out;
+        }
+
+        .slide-exit {
+            opacity: 0;
+            transform: translateY(-8px);
+            pointer-events: none;
+        }
+
+        .slide-enter {
+            opacity: 0;
+            transform: translateY(12px);
+        }
+
+        /* Cards orgánicas COMPACTAS */
+        .option-card {
+            transition: all 0.3s ease;
+            position: relative;
+            background-color: transparent;
+            border: 1px solid #D9D0CD;
+        }
+        
+        .option-card:hover {
+            background-color: rgba(197, 174, 211, 0.15); /* Lavanda ultra transparente */
+            border-color: #C5AED3;
+        }
+
+        .option-card.selected {
+            background-color: #D5DFDA; /* Salvia muy claro para contraste visible */
+            border-color: #AABCB5;
+            color: #2D2A32;
+            font-weight: 500;
+        }
+
+        /* Textarea alineado y más visible */
+        .intimate-textarea {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #D9D0CD;
+            resize: none;
+            transition: border-color 0.3s ease;
+            line-height: 1.5;
+            color: #2D2A32;
+        }
+        
+        .intimate-textarea:focus {
+            outline: none;
+            border-bottom-color: #AABCB5;
+        }
+        
+        .intimate-textarea::placeholder {
+            color: #8C868D; /* Placeholder con mejor legibilidad */
+            font-style: italic;
+        }
+
+        /* Botón de continuar */
+        .btn-fade {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .btn-fade.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body class="w-full flex flex-col relative min-h-screen">
+
+    <!-- Formas orgánicas de fondo calcadas de la imagen -->
+    <div class="bg-shapes">
+        <!-- Onda Lavanda Superior Izquierda -->
+        <svg class="shape-lavender" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <path fill="currentColor" d="M30.4,-44.6C40.6,-36.8,50.8,-30.2,58.3,-20.3C65.8,-10.4,70.6,2.8,68.4,15.1C66.1,27.4,56.8,38.8,45.4,45.9C34,53,20.5,55.8,7.3,56.1C-5.8,56.4,-18.6,54.1,-31.2,48.2C-43.8,42.3,-56.3,32.8,-62.4,20.4C-68.5,8,-68.2,-7.3,-62.8,-20.3C-57.4,-33.3,-46.9,-44,-35,-51.1C-23.1,-58.2,-9.8,-61.7,0.7,-62.7C11.2,-63.7,20.2,-52.4,30.4,-44.6Z" transform="translate(80 90) scale(1.1)" />
+            <!-- Pequeña línea curva interior lavanda -->
+            <path fill="none" stroke="#F2ECE7" stroke-width="1.5" d="M15,-55 C35,-45 45,-25 55,-10" transform="translate(80 90) scale(1.1)" opacity="0.6" />
+        </svg>
+        
+        <!-- Rama Botánica Izquierda -->
+        <svg class="botanical-branch" viewBox="0 0 100 250" xmlns="http://www.w3.org/2000/svg">
+            <path fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" d="M10,250 C30,180 20,100 50,20" />
+            <path fill="none" stroke="currentColor" stroke-width="1" d="M22,190 C35,185 45,195 40,210 C30,205 22,195 22,190 Z" />
+            <path fill="none" stroke="currentColor" stroke-width="1" d="M26,140 C45,135 55,150 48,165 C35,155 26,145 26,140 Z" />
+            <path fill="none" stroke="currentColor" stroke-width="1" d="M33,90 C55,80 65,95 55,115 C45,100 33,95 33,90 Z" />
+            <path fill="none" stroke="currentColor" stroke-width="1" d="M43,45 C65,30 75,50 65,70 C55,55 43,50 43,45 Z" />
+            <path fill="none" stroke="#AABCB5" stroke-width="1" d="M15,220 C5,210 5,195 15,190 C25,195 25,210 15,220 Z" opacity="0.7"/>
+            <path fill="none" stroke="#C5AED3" stroke-width="1" d="M20,165 C5,155 5,135 20,130 C30,140 30,155 20,165 Z" opacity="0.8"/>
+            <path fill="none" stroke="#C5AED3" stroke-width="1" d="M27,115 C10,100 10,80 27,75 C40,90 40,105 27,115 Z" opacity="0.8"/>
+        </svg>
+
+        <!-- Onda Sage Inferior Derecha -->
+        <svg class="shape-sage" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <path fill="currentColor" d="M41.7,-53.4C53.3,-45.5,61.4,-31.6,65.8,-16.5C70.2,-1.4,70.9,14.8,63.7,27.5C56.5,40.2,41.4,49.4,26.4,55.1C11.4,60.8,-3.5,63.1,-17.6,59.3C-31.7,55.5,-45,45.6,-53.3,32.7C-61.6,19.8,-64.9,3.9,-61,-10.1C-57.1,-24.1,-46,-36.2,-33.5,-44.3C-21,-52.4,-7.1,-56.5,5.1,-62.7C17.3,-68.9,23.5,-58.3,34.7,-54.6Z" transform="translate(130 140) scale(1.2)" />
+            <path fill="none" stroke="#F2ECE7" stroke-width="1.5" d="M60,-30 C45,-5 20,15 -10,25" transform="translate(130 140) scale(1.2)" opacity="0.7" />
+        </svg>
+
+        <!-- Puntos decorativos en esquinas opuestas -->
+        <div class="dots-pattern" style="top: 15%; right: 12%;"></div>
+        <div class="dots-pattern" style="bottom: 12%; left: 8%;"></div>
+    </div>
+
+    <!-- Barra de progreso delicada -->
+    <div id="progress-container" class="fixed top-0 left-0 w-full h-[3px] bg-transparent z-50 opacity-0 transition-opacity duration-700">
+        <div id="progress-bar" class="h-full bg-clinical-sage w-0 transition-all duration-700 ease-in-out"></div>
+    </div>
+
+    <!-- Contenedor principal con paddings más reducidos para escalar bien en notebooks -->
+    <main id="app-container" class="flex-1 w-full flex flex-col items-center pt-8 md:pt-12 pb-8 px-6 md:px-8 max-w-2xl mx-auto relative z-10 justify-center min-h-[85vh]">
+        <!-- El contenido se inyecta vía JS aquí -->
+    </main>
+
+    <script>
+        // --- Separador decorativo reutilizable más compacto ---
+        const getSeparatorHtml = () => `
+            <div class="flex items-center justify-center space-x-3 my-5 md:my-6 opacity-60">
+                <div class="h-[1px] w-12 bg-clinical-taupe/40"></div>
+                <svg class="w-3.5 h-3.5 text-clinical-taupe" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.5v15m7.5-7.5h-15"></path></svg>
+                <div class="h-[1px] w-12 bg-clinical-taupe/40"></div>
+            </div>
+        `;
+
+        const experienceFlow = [
+            {
+                type: 'intro',
+                title: 'Caminos hacia adentro',
+                welcome: 'Un espacio seguro y confidencial para observar la forma en que habitamos nuestras emociones y vínculos.',
+                notes: [
+                    'Completamente anónimo.',
+                    'No hay respuestas correctas.',
+                    'Tomate el tiempo que necesites.'
+                ],
+            },
+            {
+                type: 'question',
+                id: 'q_crianza_1',
+                block: 'Crianza y mandatos',
+                question: '¿Qué mensajes sentís que más marcaron tu forma de vivir la masculinidad?',
+                multiple: true,
+                options: [
+                    'Los hombres no lloran',
+                    'Tenés que poder solo',
+                    'Mostrar emociones es debilidad',
+                    'El hombre tiene que sostener todo',
+                    'Otro'
+                ]
+            },
+            {
+                type: 'question',
+                id: 'q_crianza_2',
+                block: 'Crianza y mandatos',
+                question: '¿En qué área sentís más presión por sostener o rendir?',
+                multiple: false,
+                options: [
+                    'Trabajo',
+                    'Economía',
+                    'Familia',
+                    'Pareja',
+                    'Salud',
+                    'Expectativas personales'
+                ]
+            },
+            {
+                type: 'transition',
+                text: 'A veces, cargar con las expectativas ajenas nos aleja de la vida que queremos.'
+            },
+            {
+                type: 'question',
+                id: 'q_miedos_1',
+                block: 'Miedos',
+                question: '¿Qué miedo aparece más seguido en tu vida cotidiana?',
+                multiple: false,
+                options: [
+                    'Fracasar',
+                    'Quedarme solo',
+                    'Perder el control',
+                    'Decepcionar a otros',
+                    'No saber manejar conflictos'
+                ]
+            },
+            {
+                type: 'question',
+                id: 'q_miedos_2',
+                block: 'Miedos',
+                question: '¿Qué hacés normalmente cuando algo emocional te supera?',
+                multiple: true,
+                options: [
+                    'Me aislo',
+                    'Me distraigo',
+                    'Me enojo',
+                    'Sigo funcionando como si nada',
+                    'Busco hablarlo'
+                ]
+            },
+            {
+                type: 'transition',
+                text: 'Evitar lo que sentimos puede darnos alivio temporal, pero los vínculos son el espejo donde más nos reflejamos.'
+            },
+            {
+                type: 'question',
+                id: 'q_vinculos_1',
+                block: 'Vínculos',
+                question: '¿Qué suele costarte más en tus relaciones?',
+                multiple: true,
+                options: [
+                    'Expresar emociones',
+                    'Pedir ayuda',
+                    'Poner límites',
+                    'Escuchar sin intentar resolver',
+                    'Afrontar conflictos'
+                ]
+            },
+            {
+                type: 'question',
+                id: 'q_vinculos_2',
+                block: 'Vínculos',
+                question: '¿Cómo reaccionás frente a conversaciones incómodas?',
+                multiple: false,
+                options: [
+                    'Las evito',
+                    'Cambio de tema',
+                    'Me cierro',
+                    'Exploto',
+                    'Intento hablarlas'
+                ]
+            },
+            {
+                type: 'transition',
+                text: 'Reconocer nuestra vulnerabilidad es el primer paso para poder habitarla con amabilidad.'
+            },
+            {
+                type: 'question',
+                id: 'q_emocional_1',
+                block: 'Mundo emocional',
+                question: '¿Qué emoción sentís más difícil de expresar?',
+                multiple: false,
+                options: [
+                    'Tristeza',
+                    'Miedo',
+                    'Afecto',
+                    'Culpa',
+                    'Vulnerabilidad'
+                ]
+            },
+            {
+                type: 'question',
+                id: 'q_emocional_2',
+                block: 'Mundo emocional',
+                question: '¿Qué hacés con lo que sentís cuando no sabés cómo expresarlo?',
+                multiple: true,
+                options: [
+                    'Lo guardo',
+                    'Me desconecto',
+                    'Trabajo más',
+                    'Me enojo',
+                    'Intento escribir o hablar'
+                ]
+            },
+            {
+                type: 'outro'
+            }
+        ];
+
+        let currentIndex = 0;
+        let responses = {};
+        let totalQuestions = experienceFlow.filter(step => step.type === 'question').length;
+
+        const appContainer = document.getElementById('app-container');
+        const progressContainer = document.getElementById('progress-container');
+        const progressBar = document.getElementById('progress-bar');
+
+        async function navigateTo(newIndex) {
+            if (newIndex < 0 || newIndex >= experienceFlow.length) return;
+
+            const currentContent = document.getElementById('slide-content');
+            if (currentContent) {
+                currentContent.classList.add('slide-exit');
+                await new Promise(resolve => setTimeout(resolve, 400)); // Tiempo de transición reducido a la mitad
+            }
+
+            currentIndex = newIndex;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            renderCurrentStep();
+            updateProgress();
+
+            const newContent = document.getElementById('slide-content');
+            newContent.classList.add('slide-enter');
+            void newContent.offsetWidth; 
+            newContent.classList.remove('slide-enter');
+
+            if (experienceFlow[currentIndex].type === 'outro') {
+                sendDataToBackendSilently();
+            }
+        }
+
+        function updateProgress() {
+            const currentStep = experienceFlow[currentIndex];
+            if (currentStep.type === 'intro' || currentStep.type === 'outro') {
+                progressContainer.style.opacity = '0';
+                return;
+            }
+            progressContainer.style.opacity = '1';
+            let questionsSeen = 0;
+            for (let i = 0; i <= currentIndex; i++) {
+                if (experienceFlow[i].type === 'question') questionsSeen++;
+            }
+            const percentage = (questionsSeen / totalQuestions) * 100;
+            progressBar.style.width = `${percentage}%`;
+        }
+
+        function buildIntro(data) {
+            return `
+                <div id="slide-content" class="slide-container w-full flex flex-col justify-center items-center text-center">
+                    <h1 class="font-serif text-2xl md:text-4xl text-clinical-slate mb-3 font-medium tracking-tight">
+                        ${data.title}
+                    </h1>
+                    
+                    ${getSeparatorHtml()}
+
+                    <p class="font-serif italic text-base md:text-lg text-clinical-taupe mb-8 max-w-sm font-light leading-relaxed">
+                        ${data.welcome}
+                    </p>
+                    
+                    <div class="flex flex-col space-y-1.5 mb-12 text-xs text-clinical-taupe/80 font-sans font-medium">
+                        ${data.notes.map(note => `<span>${note}</span>`).join('')}
+                    </div>
+
+                    <button onclick="navigateTo(currentIndex + 1)" class="group text-clinical-slate hover:text-clinical-taupe transition-colors duration-300 font-sans tracking-[0.2em] uppercase text-[11px] font-semibold">
+                        Comenzar recorrido
+                        <span class="block w-0 group-hover:w-full h-[1px] bg-clinical-slate transition-all duration-300 mt-1.5 mx-auto"></span>
+                    </button>
+                </div>
+            `;
+        }
+
+        function buildQuestion(data) {
+            const savedState = responses[data.id] || { selected: [], detail: '' };
+            const hasSelection = savedState.selected.length > 0;
+            const btnVisibleClass = hasSelection ? 'visible' : '';
+            
+            const selectionHint = data.multiple ? '<span class="block text-clinical-taupe/70 text-[11px] font-sans mt-2 font-medium tracking-normal">(podés seleccionar varias opciones)</span>' : '';
+
+            const optionsHtml = data.options.map(opt => {
+                const isSelected = savedState.selected.includes(opt);
+                const selectedClass = isSelected ? 'selected' : '';
+                return `
+                    <div onclick="selectOption('${data.id}', '${opt}', ${data.multiple})" 
+                         class="option-card ${selectedClass} w-full py-2.5 px-4 rounded-xl cursor-pointer flex items-center justify-center text-center">
+                        <span class="font-sans text-sm transition-colors">${opt}</span>
+                    </div>
+                `;
+            }).join('');
+
+            return `
+                <div id="slide-content" class="slide-container w-full flex flex-col max-w-lg mx-auto">
+                    
+                    <!-- Encabezado compacto -->
+                    <div class="mb-4 text-center mt-2">
+                        <span class="block font-sans text-[10px] md:text-[11px] uppercase tracking-[0.2em] text-clinical-taupe font-semibold mb-2 opacity-80">
+                            ${data.block}
+                        </span>
+                        <h2 class="font-serif text-lg md:text-2xl text-clinical-slate leading-snug font-medium">
+                            ${data.question}
+                            ${selectionHint}
+                        </h2>
+                    </div>
+
+                    <!-- Opciones compactas -->
+                    <div id="options-${data.id}" class="flex flex-col gap-1.5 md:gap-2 w-full mb-4">
+                        ${optionsHtml}
+                    </div>
+
+                    <!-- Textarea alineado perfectamente al ancho del contenedor de opciones -->
+                    <div class="w-full mb-5">
+                        <textarea id="detail-${data.id}" 
+                            class="intimate-textarea w-full py-2 text-sm font-sans" 
+                            rows="1"
+                            placeholder="Si querés, podés profundizar acá..."
+                            oninput="autoResizeTextarea(this); updateDetail('${data.id}', this.value)"
+                        >${savedState.detail}</textarea>
+                    </div>
+
+                    <!-- Controles de navegación siempre visibles -->
+                    <div class="flex items-center justify-between mt-1">
+                        <button onclick="navigateTo(currentIndex - 1)" class="text-clinical-taupe hover:text-clinical-slate text-[10px] md:text-[11px] uppercase tracking-[0.15em] transition-colors font-semibold">
+                            Volver
+                        </button>
+                        
+                        <button id="btn-continue-${data.id}" onclick="navigateTo(currentIndex + 1)" class="btn-fade ${btnVisibleClass} text-clinical-slate hover:text-clinical-taupe text-[10px] md:text-[11px] uppercase tracking-[0.15em] transition-colors font-bold">
+                            Siguiente
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function buildTransition(data) {
+            const parts = data.text.split(', pero ');
+            let textHtml = `<p class="font-serif text-xl md:text-2xl text-clinical-slate font-medium leading-relaxed max-w-md mx-auto">`;
+            
+            if (parts.length > 1) {
+                textHtml += `${parts[0]}...<br><span class="italic text-clinical-taupe font-light block mt-3">${parts[1]}</span>`;
+            } else {
+                textHtml += data.text;
+            }
+            textHtml += `</p>`;
+
+            return `
+                <div id="slide-content" class="slide-container w-full flex flex-col justify-center items-center text-center">
+                    
+                    ${getSeparatorHtml()}
+                    
+                    <div class="my-6">
+                        ${textHtml}
+                    </div>
+                    
+                    ${getSeparatorHtml()}
+
+                    <button onclick="navigateTo(currentIndex + 1)" class="mt-8 text-clinical-taupe hover:text-clinical-slate text-[11px] uppercase tracking-[0.2em] transition-colors duration-300 font-semibold">
+                        Continuar
+                    </button>
+                </div>
+            `;
+        }
+
+        function buildOutro() {
+            return `
+                <div id="slide-content" class="slide-container w-full flex flex-col justify-center items-center text-center">
+                    
+                    <h2 class="font-serif text-2xl md:text-3xl text-clinical-slate mb-4 font-medium mt-6">
+                        Gracias por este espacio.
+                    </h2>
+                    
+                    <p class="font-serif italic text-base md:text-lg text-clinical-taupe mb-10 max-w-sm font-light leading-relaxed">
+                        Mirar hacia adentro es un acto de valentía y el primer paso hacia una vida más conectada con lo que valoramos.
+                    </p>
+
+                    <div class="flex flex-col items-center">
+                        <button onclick="resetExperience()" class="group text-clinical-slate hover:text-clinical-taupe transition-colors duration-300 font-sans tracking-[0.15em] uppercase text-[11px] font-semibold">
+                            Volver al inicio
+                            <span class="block w-0 group-hover:w-full h-[1px] bg-clinical-slate transition-all duration-300 mt-1.5 mx-auto"></span>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderCurrentStep() {
+            const step = experienceFlow[currentIndex];
+            let html = '';
+
+            switch (step.type) {
+                case 'intro': html = buildIntro(step); break;
+                case 'question': html = buildQuestion(step); break;
+                case 'transition': html = buildTransition(step); break;
+                case 'outro': html = buildOutro(); break;
+            }
+
+            appContainer.innerHTML = html;
+            const textareas = appContainer.querySelectorAll('textarea');
+            textareas.forEach(ta => autoResizeTextarea(ta));
+        }
+
+        window.selectOption = function(questionId, optionText, isMultiple) {
+            if (!responses[questionId]) {
+                responses[questionId] = { selected: [], detail: '' };
+            }
+
+            let currentSelection = responses[questionId].selected;
+
+            if (isMultiple) {
+                if (currentSelection.includes(optionText)) {
+                    currentSelection = currentSelection.filter(item => item !== optionText);
+                } else {
+                    currentSelection.push(optionText);
+                }
+            } else {
+                currentSelection = [optionText];
+            }
+
+            responses[questionId].selected = currentSelection;
+            renderCurrentStep();
+        };
+
+        window.updateDetail = function(questionId, text) {
+            if (!responses[questionId]) {
+                responses[questionId] = { selected: [], detail: '' };
+            }
+            responses[questionId].detail = text;
+        };
+
+        window.autoResizeTextarea = function(element) {
+            element.style.height = 'auto';
+            element.style.height = (element.scrollHeight) + 'px';
+        };
+
+        window.sendDataToBackendSilently = async function() {
+            const exportData = {
+                fecha: new Date().toISOString(),
+                respuestas: []
+            };
+
+            experienceFlow.forEach(step => {
+                if (step.type === 'question' && responses[step.id]) {
+                    exportData.respuestas.push({
+                        id_pregunta: step.id,
+                        bloque: step.block,
+                        pregunta: step.question,
+                        seleccion: responses[step.id].selected.join(' | '), 
+                        notas: responses[step.id].detail || ""
+                    });
+                }
+            });
+
+            console.log("Datos listos para enviar al servidor:", exportData);
+        };
+
+        window.resetExperience = async function() {
+            responses = {};
+            await navigateTo(0);
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCurrentStep();
+        });
+
+    </script>
+</body>
+</html>
