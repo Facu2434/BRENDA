@@ -740,43 +740,33 @@ window.sendDataToBackendSilently = async function(){
     };
 
     experienceFlow.forEach(step => {
-
-        if(step.type === 'question'
-            && responses[step.id]){
-
+        if(step.type === 'question' && responses[step.id]){
             exportData.respuestas.push({
-
                 id_pregunta:step.id,
                 bloque:step.block,
                 pregunta:step.question,
                 seleccion:responses[step.id].selected.join(' | '),
                 notas:responses[step.id].detail || ""
-
             });
         }
     });
 
     try{
-
         await fetch(
             "https://script.google.com/macros/s/AKfycbyHTT18jhFBd0XheNrwXpnsryEJhFeLEhXHU7JQfdfRp2A0LyWOx0BQEpapRwj7PyRW/exec",
             {
-                method:"POST",
-                headers:{
-                    "Content-Type":"text/plain;charset=utf-8"
+                method: "POST",
+                redirect: "follow", 
+                headers: {
+                    "Content-Type": "text/plain;charset=utf-8"
                 },
-                body:JSON.stringify(exportData)
+                body: JSON.stringify(exportData)
             }
         );
-
         console.log("Datos enviados correctamente");
 
     } catch(error){
-
-        console.error(
-            "Error enviando datos:",
-            error
-        );
+        console.error("Error enviando datos:", error);
     }
 };
 
