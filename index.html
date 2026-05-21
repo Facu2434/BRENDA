@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -6,47 +7,103 @@
   <title>BRENDA</title>
 
   <style>
+    *{
+      box-sizing:border-box;
+    }
+
     body{
       margin:0;
-      height:100vh;
+      min-height:100vh;
       display:flex;
       justify-content:center;
       align-items:center;
       background:#111;
       font-family:Arial, sans-serif;
       color:white;
+      padding:40px 20px;
     }
 
     .container{
+      width:100%;
+      max-width:500px;
       text-align:center;
     }
 
+    h1{
+      font-size:42px;
+      margin-bottom:10px;
+      font-weight:700;
+    }
+
+    p{
+      color:#aaa;
+      margin-bottom:40px;
+    }
+
+    .buttons{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+
     a{
-      display:inline-block;
-      margin-top:20px;
-      padding:14px 28px;
-      background:#2a2a2a;
+      display:block;
+      padding:18px 24px;
+      background:#1d1d1d;
       color:white;
       text-decoration:none;
-      border-radius:12px;
+      border-radius:14px;
       transition:.3s;
+      border:1px solid #2f2f2f;
+      font-size:16px;
     }
 
     a:hover{
-      background:#444;
+      background:#2a2a2a;
+      border-color:#555;
+      transform:translateY(-2px);
+    }
+
+    .version{
+      display:block;
+      font-size:12px;
+      color:#888;
+      margin-top:6px;
     }
   </style>
+
 </head>
 
 <body>
 
   <div class="container">
-    <h1>BRENDA</h1>
-    <p>Ingresar experiencia</p>
 
-    <a href="brenda.html">
-      Abrir módulo
-    </a>
+```
+<h1>BRENDA</h1>
+
+<p>
+  Versiones y pruebas del módulo introspectivo.
+</p>
+
+<div class="buttons">
+
+  <a href="brenda.html">
+    Abrir versión 1
+    <span class="version">
+      Primera experiencia base
+    </span>
+  </a>
+
+  <a href="brenda2.html">
+    Abrir versión 2
+    <span class="version">
+      Refinamiento UX + responsive + atmósfera emocional
+    </span>
+  </a>
+
+</div>
+```
+
   </div>
 
 </body>
