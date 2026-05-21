@@ -562,8 +562,15 @@
                 }
             });
 
-            console.log("Datos listos para enviar al servidor:", exportData);
-        };
+            fetch("https://script.google.com/macros/s/AKfycbyHTT18jhFBd0XheNrwXpnsryEJhFeLEhXHU7JQfdfRp2A0LyWOx0BQEpapRwj7PyRW/exec", {
+                method: "POST",
+                mode: "no-cors",
+                headers: {
+                    "Content-Type": "application/json"
+                        },
+                                body: JSON.stringify(exportData)
+                        });
+                        };
 
         window.resetExperience = async function() {
             responses = {};
