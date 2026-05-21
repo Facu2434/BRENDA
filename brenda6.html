@@ -38,164 +38,138 @@
     </script>
 
     <style>
-
         html,
-        body{
-            margin:0;
-            padding:0;
-            min-height:100%;
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+            background-color: #F2ECE7;
         }
 
-        body{
-            position:relative;
-
-            color:#1A181C;
-
-            overflow-x:hidden;
-            overflow-y:auto;
-
-            -webkit-font-smoothing:antialiased;
-            -moz-osx-font-smoothing:grayscale;
+        body {
+            position: relative;
+            color: #1A181C;
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         /* FONDO REAL */
-        #bg-image{
-            position:fixed;
-
-            top:0;
-            left:0;
-
-            width:100vw;
-            height:100vh;
-
-            object-fit:cover;
-            object-position:center top;
-
-            z-index:-1;
-
-            pointer-events:none;
-
-            user-select:none;
-            -webkit-user-drag:none;
+        #bg-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            z-index: 0;
+            pointer-events: none;
+            user-select: none;
+            -webkit-user-drag: none;
         }
 
-        ::-webkit-scrollbar{
-            width:4px;
+        ::-webkit-scrollbar {
+            width: 4px;
         }
 
-        ::-webkit-scrollbar-track{
-            background:transparent;
+        ::-webkit-scrollbar-track {
+            background: transparent;
         }
 
-        ::-webkit-scrollbar-thumb{
-            background:#C2B9B5;
-            border-radius:4px;
+        ::-webkit-scrollbar-thumb {
+            background: #C2B9B5;
+            border-radius: 4px;
         }
 
-        .slide-container{
-            opacity:1;
-            transform:translateY(0);
-
-            transition:
-                opacity .3s ease-in-out,
-                transform .4s ease-out;
+        .slide-container {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity .3s ease-in-out, transform .4s ease-out;
         }
 
-        .slide-exit{
-            opacity:0;
-            transform:translateY(-5px);
-            pointer-events:none;
+        .slide-exit {
+            opacity: 0;
+            transform: translateY(-5px);
+            pointer-events: none;
         }
 
-        .slide-enter{
-            opacity:0;
-            transform:translateY(10px);
+        .slide-enter {
+            opacity: 0;
+            transform: translateY(10px);
         }
 
-        .option-card{
-            transition:all .2s ease;
-            position:relative;
-
-            background-color:rgba(255,255,255,.18);
-
-            border:1px solid #C2B9B5;
-
-            backdrop-filter:blur(4px);
+        .option-card {
+            transition: all .2s ease;
+            position: relative;
+            background-color: rgba(255,255,255,.18);
+            border: 1px solid #C2B9B5;
+            backdrop-filter: blur(4px);
         }
 
-        .option-card:hover{
-            background-color:rgba(197,174,211,.15);
-            border-color:#C5AED3;
+        .option-card:hover {
+            background-color: rgba(197,174,211,.15);
+            border-color: #C5AED3;
         }
 
-        .option-card.selected{
-            background-color:#D5DFDA;
-            border-color:#98B0A5;
-            color:#1A181C;
-            font-weight:500;
+        .option-card.selected {
+            background-color: #D5DFDA;
+            border-color: #98B0A5;
+            color: #1A181C;
+            font-weight: 500;
         }
 
-        .intimate-textarea{
-            background:transparent;
-
-            border:none;
-            border-bottom:1px solid #C2B9B5;
-
-            resize:none;
-
-            transition:border-color .2s ease;
-
-            line-height:1.6;
-            color:#1A181C;
-
-            overflow:hidden;
+        .intimate-textarea {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #C2B9B5;
+            resize: none;
+            transition: border-color .2s ease;
+            line-height: 1.6;
+            color: #1A181C;
+            overflow: hidden;
         }
 
-        .intimate-textarea:focus{
-            outline:none;
-            border-bottom-color:#98B0A5;
+        .intimate-textarea:focus {
+            outline: none;
+            border-bottom-color: #98B0A5;
         }
 
-        .intimate-textarea::placeholder{
-            color:#716C73;
-            font-style:italic;
+        .intimate-textarea::placeholder {
+            color: #716C73;
+            font-style: italic;
         }
 
-        .btn-fade{
-            opacity:0;
-            pointer-events:none;
-            transition:opacity .3s ease;
+        .btn-fade {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .3s ease;
         }
 
-        .btn-fade.visible{
-            opacity:1;
-            pointer-events:auto;
+        .btn-fade.visible {
+            opacity: 1;
+            pointer-events: auto;
         }
-
     </style>
 
 </head>
 
 <body class="w-full flex flex-col relative min-h-screen">
 
-    <!-- IMAGEN REAL -->
     <img
         src="fondo.png"
         alt=""
         id="bg-image"
     />
 
-    <!-- PROGRESS -->
     <div id="progress-container"
          class="fixed top-0 left-0 w-full h-[3px] bg-transparent z-50 opacity-0 transition-opacity duration-500">
-
         <div id="progress-bar"
              class="h-full bg-clinical-sage w-0 transition-all duration-500 ease-in-out">
         </div>
-
     </div>
 
-    <!-- APP -->
     <main id="app-container"
           class="flex-1 w-full flex flex-col items-center justify-center pt-8 md:pt-12 pb-8 px-6 md:px-12 max-w-5xl mx-auto relative z-10 min-h-[90vh]">
     </main>
@@ -205,47 +179,30 @@
 const getSeparatorHtml = () => `
     <div class="flex items-center justify-center space-x-3 my-5 md:my-6 opacity-70">
         <div class="h-[1px] w-12 bg-clinical-taupe/40"></div>
-
-        <svg class="w-3.5 h-3.5 text-clinical-taupe"
-             fill="none"
-             stroke="currentColor"
-             viewBox="0 0 24 24">
-
-            <path stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="1.5"
-                  d="M12 4.5v15m7.5-7.5h-15">
-            </path>
-
+        <svg class="w-3.5 h-3.5 text-clinical-taupe" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.5v15m7.5-7.5h-15"></path>
         </svg>
-
         <div class="h-[1px] w-12 bg-clinical-taupe/40"></div>
     </div>
 `;
 
 const experienceFlow = [
-
 {
     type:'intro',
-
     title:'Caminos hacia adentro',
-
     welcome:'Un espacio seguro y confidencial para observar la forma en que habitamos nuestras emociones y vínculos.',
-
     notes:[
         'Completamente anónimo.',
         'No hay respuestas correctas.',
         'Tomate el tiempo que necesites.'
     ]
 },
-
 {
     type:'question',
     id:'q_crianza_1',
     block:'Crianza y mandatos',
     question:'¿Qué mensajes sentís que más marcaron tu forma de vivir la masculinidad?',
     multiple:true,
-
     options:[
         'Los hombres no lloran',
         'Tenés que poder solo',
@@ -254,14 +211,12 @@ const experienceFlow = [
         'Otro'
     ]
 },
-
 {
     type:'question',
     id:'q_crianza_2',
     block:'Crianza y mandatos',
     question:'¿En qué área sentís más presión por sostener o rendir?',
     multiple:false,
-
     options:[
         'Trabajo',
         'Economía',
@@ -271,19 +226,16 @@ const experienceFlow = [
         'Expectativas personales'
     ]
 },
-
 {
     type:'transition',
     text:'A veces, cargar con las expectativas ajenas nos aleja de la vida que queremos.'
 },
-
 {
     type:'question',
     id:'q_miedos_1',
     block:'Miedos',
     question:'¿Qué miedo aparece más seguido en tu vida cotidiana?',
     multiple:false,
-
     options:[
         'Fracasar',
         'Quedarme solo',
@@ -292,14 +244,12 @@ const experienceFlow = [
         'No saber manejar conflictos'
     ]
 },
-
 {
     type:'question',
     id:'q_miedos_2',
     block:'Miedos',
     question:'¿Qué hacés normalmente cuando algo emocional te supera?',
     multiple:true,
-
     options:[
         'Me aislo',
         'Me distraigo',
@@ -308,19 +258,16 @@ const experienceFlow = [
         'Busco hablarlo'
     ]
 },
-
 {
     type:'transition',
     text:'Evitar lo que sentimos puede darnos alivio temporal, pero los vínculos son el espejo donde más nos reflejamos.'
 },
-
 {
     type:'question',
     id:'q_vinculos_1',
     block:'Vínculos',
     question:'¿Qué suele costarte más en tus relaciones?',
     multiple:true,
-
     options:[
         'Expresar emociones',
         'Pedir ayuda',
@@ -329,14 +276,12 @@ const experienceFlow = [
         'Afrontar conflictos'
     ]
 },
-
 {
     type:'question',
     id:'q_vinculos_2',
     block:'Vínculos',
     question:'¿Cómo reaccionás frente a conversaciones incómodas?',
     multiple:false,
-
     options:[
         'Las evito',
         'Cambio de tema',
@@ -345,19 +290,16 @@ const experienceFlow = [
         'Intento hablarlas'
     ]
 },
-
 {
     type:'transition',
     text:'Reconocer nuestra vulnerabilidad es el primer paso para poder habitarla con amabilidad.'
 },
-
 {
     type:'question',
     id:'q_emocional_1',
     block:'Mundo emocional',
     question:'¿Qué emoción sentís más difícil de expresar?',
     multiple:false,
-
     options:[
         'Tristeza',
         'Miedo',
@@ -366,14 +308,12 @@ const experienceFlow = [
         'Vulnerabilidad'
     ]
 },
-
 {
     type:'question',
     id:'q_emocional_2',
     block:'Mundo emocional',
     question:'¿Qué hacés con lo que sentís cuando no sabés cómo expresarlo?',
     multiple:true,
-
     options:[
         'Lo guardo',
         'Me desconecto',
@@ -382,63 +322,38 @@ const experienceFlow = [
         'Intento escribir o hablar'
     ]
 },
-
 {
     type:'outro'
 }
-
 ];
 
 let currentIndex = 0;
 let responses = {};
 
-let totalQuestions =
-    experienceFlow.filter(
-        step => step.type === 'question'
-    ).length;
+let totalQuestions = experienceFlow.filter(step => step.type === 'question').length;
 
-const appContainer =
-    document.getElementById('app-container');
-
-const progressContainer =
-    document.getElementById('progress-container');
-
-const progressBar =
-    document.getElementById('progress-bar');
+const appContainer = document.getElementById('app-container');
+const progressContainer = document.getElementById('progress-container');
+const progressBar = document.getElementById('progress-bar');
 
 async function navigateTo(newIndex){
-
     if(newIndex < 0 || newIndex >= experienceFlow.length) return;
 
-    const currentContent =
-        document.getElementById('slide-content');
-
+    const currentContent = document.getElementById('slide-content');
     if(currentContent){
-
         currentContent.classList.add('slide-exit');
-
-        await new Promise(
-            resolve => setTimeout(resolve,250)
-        );
+        await new Promise(resolve => setTimeout(resolve,250));
     }
 
     currentIndex = newIndex;
-
-    window.scrollTo({
-        top:0,
-        behavior:'smooth'
-    });
+    window.scrollTo({ top:0, behavior:'smooth' });
 
     renderCurrentStep();
     updateProgress();
 
-    const newContent =
-        document.getElementById('slide-content');
-
+    const newContent = document.getElementById('slide-content');
     newContent.classList.add('slide-enter');
-
     void newContent.offsetWidth;
-
     newContent.classList.remove('slide-enter');
 
     if(experienceFlow[currentIndex].type === 'outro'){
@@ -447,341 +362,187 @@ async function navigateTo(newIndex){
 }
 
 function updateProgress(){
-
-    const currentStep =
-        experienceFlow[currentIndex];
-
-    if(currentStep.type === 'intro'
-        || currentStep.type === 'outro'){
-
+    const currentStep = experienceFlow[currentIndex];
+    if(currentStep.type === 'intro' || currentStep.type === 'outro'){
         progressContainer.style.opacity = '0';
         return;
     }
-
     progressContainer.style.opacity = '1';
 
     let questionsSeen = 0;
-
     for(let i=0; i<=currentIndex; i++){
-
         if(experienceFlow[i].type === 'question'){
             questionsSeen++;
         }
     }
-
-    const percentage =
-        (questionsSeen / totalQuestions) * 100;
-
+    const percentage = (questionsSeen / totalQuestions) * 100;
     progressBar.style.width = `${percentage}%`;
 }
 
 function buildIntro(data){
-
 return `
-<div id="slide-content"
-     class="slide-container w-full max-w-2xl flex flex-col justify-center items-center text-center">
-
+<div id="slide-content" class="slide-container w-full max-w-2xl flex flex-col justify-center items-center text-center">
     <h1 class="font-serif text-3xl md:text-5xl text-clinical-slate mb-4 font-semibold tracking-tight">
         ${data.title}
     </h1>
-
     ${getSeparatorHtml()}
-
     <p class="font-serif italic text-lg md:text-xl text-clinical-taupe mb-8 max-w-md font-medium leading-relaxed">
         ${data.welcome}
     </p>
-
     <div class="flex flex-col space-y-2 mb-12 text-sm text-clinical-taupe font-sans font-medium">
-
         ${data.notes.map(note => `<span>${note}</span>`).join('')}
-
     </div>
-
-    <button onclick="navigateTo(currentIndex + 1)"
-            class="group text-clinical-slate hover:text-clinical-taupe transition-colors duration-300 font-sans tracking-[0.2em] uppercase text-xs font-bold">
-
+    <button onclick="navigateTo(currentIndex + 1)" class="group text-clinical-slate hover:text-clinical-taupe transition-colors duration-300 font-sans tracking-[0.2em] uppercase text-xs font-bold">
         Comenzar recorrido
-
         <span class="block w-0 group-hover:w-full h-[1.5px] bg-clinical-slate transition-all duration-300 mt-2 mx-auto"></span>
-
     </button>
-
 </div>
 `;
 }
 
 function buildQuestion(data){
-
-const savedState =
-    responses[data.id] || {
-        selected:[],
-        detail:''
-    };
-
-const hasSelection =
-    savedState.selected.length > 0;
-
-const btnVisibleClass =
-    hasSelection ? 'visible' : '';
-
-const selectionHint =
-    data.multiple
+const savedState = responses[data.id] || { selected:[], detail:'' };
+const hasSelection = savedState.selected.length > 0;
+const btnVisibleClass = hasSelection ? 'visible' : '';
+const selectionHint = data.multiple
     ? '<span class="block text-clinical-taupe text-[11px] md:text-xs font-sans mt-3 font-semibold tracking-normal">(Podés seleccionar varias opciones)</span>'
     : '';
 
 const optionsHtml = data.options.map(opt => {
-
-    const isSelected =
-        savedState.selected.includes(opt);
-
-    const selectedClass =
-        isSelected ? 'selected' : '';
-
+    const isSelected = savedState.selected.includes(opt);
+    const selectedClass = isSelected ? 'selected' : '';
     return `
-        <div onclick="selectOption('${data.id}','${opt}',${data.multiple})"
-             class="option-card ${selectedClass} w-full py-2.5 px-4 rounded-xl cursor-pointer flex items-center justify-center text-center">
-
+        <div onclick="selectOption('${data.id}','${opt}',${data.multiple})" class="option-card ${selectedClass} w-full py-2.5 px-4 rounded-xl cursor-pointer flex items-center justify-center text-center">
             <span class="font-sans text-sm md:text-[15px] transition-colors leading-tight">
                 ${opt}
             </span>
-
         </div>
     `;
 }).join('');
 
 return `
-
-<div id="slide-content"
-     class="slide-container w-full flex flex-col md:flex-row gap-8 md:gap-16 max-w-4xl mx-auto items-start justify-center pt-2 md:pt-6">
-
+<div id="slide-content" class="slide-container w-full flex flex-col md:flex-row gap-8 md:gap-16 max-w-4xl mx-auto items-start justify-center pt-2 md:pt-6">
     <div class="w-full md:w-[45%] flex flex-col text-center md:text-left">
-
         <span class="block font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] text-clinical-taupe font-bold mb-3">
             ${data.block}
         </span>
-
         <h2 class="font-serif text-xl md:text-3xl text-clinical-slate leading-snug md:leading-tight font-semibold">
             ${data.question}
         </h2>
-
         ${selectionHint}
-
         <div class="hidden md:block w-12 h-[2px] bg-clinical-border/60 mt-6 rounded-full"></div>
-
     </div>
-
     <div class="w-full md:w-[55%] flex flex-col gap-0">
-
-        <div id="options-${data.id}"
-             class="flex flex-col gap-2 w-full mb-4">
-
+        <div id="options-${data.id}" class="flex flex-col gap-2 w-full mb-4">
             ${optionsHtml}
-
         </div>
-
         <div class="w-full mb-6">
-
-            <textarea
-                id="detail-${data.id}"
-                class="intimate-textarea w-full pt-3 pb-2 text-sm font-sans"
-                rows="2"
-                placeholder="Si querés, podés profundizar acá..."
-                oninput="autoResizeTextarea(this); updateDetail('${data.id}', this.value)"
-            >${savedState.detail}</textarea>
-
+            <textarea id="detail-${data.id}" class="intimate-textarea w-full pt-3 pb-2 text-sm font-sans" rows="2" placeholder="Si querés, podés profundizar acá..." oninput="autoResizeTextarea(this); updateDetail('${data.id}', this.value)">${savedState.detail}</textarea>
         </div>
-
         <div class="flex items-center justify-between w-full pt-1">
-
-            <button onclick="navigateTo(currentIndex - 1)"
-                    class="text-clinical-taupe hover:text-clinical-slate text-[11px] md:text-xs uppercase tracking-[0.15em] transition-colors font-bold">
-
+            <button onclick="navigateTo(currentIndex - 1)" class="text-clinical-taupe hover:text-clinical-slate text-[11px] md:text-xs uppercase tracking-[0.15em] transition-colors font-bold">
                 Volver
-
             </button>
-
-            <button
-                id="btn-continue-${data.id}"
-                onclick="navigateTo(currentIndex + 1)"
-                class="btn-fade ${btnVisibleClass} text-clinical-slate hover:text-clinical-taupe text-[11px] md:text-xs uppercase tracking-[0.15em] transition-colors font-bold">
-
+            <button id="btn-continue-${data.id}" onclick="navigateTo(currentIndex + 1)" class="btn-fade ${btnVisibleClass} text-clinical-slate hover:text-clinical-taupe text-[11px] md:text-xs uppercase tracking-[0.15em] transition-colors font-bold">
                 Siguiente
-
             </button>
-
         </div>
-
     </div>
-
 </div>
 `;
 }
 
 function buildTransition(data){
-
 return `
-<div id="slide-content"
-     class="slide-container w-full max-w-2xl flex flex-col justify-center items-center text-center">
-
+<div id="slide-content" class="slide-container w-full max-w-2xl flex flex-col justify-center items-center text-center">
     ${getSeparatorHtml()}
-
     <div class="my-6 md:my-10">
-
         <p class="font-serif text-xl md:text-3xl text-clinical-slate font-semibold leading-relaxed max-w-2xl mx-auto">
             ${data.text}
         </p>
-
     </div>
-
     ${getSeparatorHtml()}
-
-    <button onclick="navigateTo(currentIndex + 1)"
-            class="mt-8 text-clinical-taupe hover:text-clinical-slate text-xs uppercase tracking-[0.2em] transition-colors duration-300 font-bold">
-
+    <button onclick="navigateTo(currentIndex + 1)" class="mt-8 text-clinical-taupe hover:text-clinical-slate text-xs uppercase tracking-[0.2em] transition-colors duration-300 font-bold">
         Continuar
-
     </button>
-
 </div>
 `;
 }
 
 function buildOutro(){
-
 return `
-<div id="slide-content"
-     class="slide-container w-full max-w-2xl flex flex-col justify-center items-center text-center">
-
+<div id="slide-content" class="slide-container w-full max-w-2xl flex flex-col justify-center items-center text-center">
     <h2 class="font-serif text-3xl md:text-4xl text-clinical-slate mb-5 font-semibold mt-4">
         Gracias por este espacio.
     </h2>
-
     <p class="font-serif italic text-lg md:text-xl text-clinical-taupe mb-12 max-w-md font-medium leading-relaxed">
         Mirar hacia adentro es un acto de valentía y el primer paso hacia una vida más conectada con lo que valoramos.
     </p>
-
     <div class="flex flex-col items-center">
-
-        <button onclick="resetExperience()"
-                class="group text-clinical-slate hover:text-clinical-taupe transition-colors duration-300 font-sans tracking-[0.15em] uppercase text-xs font-bold">
-
+        <button onclick="resetExperience()" class="group text-clinical-slate hover:text-clinical-taupe transition-colors duration-300 font-sans tracking-[0.15em] uppercase text-xs font-bold">
             Volver al inicio
-
             <span class="block w-0 group-hover:w-full h-[1.5px] bg-clinical-slate transition-all duration-300 mt-2 mx-auto"></span>
-
         </button>
-
     </div>
-
 </div>
 `;
 }
 
 function renderCurrentStep(){
-
-    const step =
-        experienceFlow[currentIndex];
-
+    const step = experienceFlow[currentIndex];
     let html = '';
 
     switch(step.type){
-
-        case 'intro':
-            html = buildIntro(step);
-            break;
-
-        case 'question':
-            html = buildQuestion(step);
-            break;
-
-        case 'transition':
-            html = buildTransition(step);
-            break;
-
-        case 'outro':
-            html = buildOutro();
-            break;
+        case 'intro': html = buildIntro(step); break;
+        case 'question': html = buildQuestion(step); break;
+        case 'transition': html = buildTransition(step); break;
+        case 'outro': html = buildOutro(); break;
     }
 
     appContainer.innerHTML = html;
-
-    const textareas =
-        appContainer.querySelectorAll('textarea');
-
-    textareas.forEach(
-        ta => autoResizeTextarea(ta)
-    );
+    const textareas = appContainer.querySelectorAll('textarea');
+    textareas.forEach(ta => autoResizeTextarea(ta));
 }
 
 window.selectOption = function(questionId,optionText,isMultiple){
-
     if(!responses[questionId]){
-
-        responses[questionId] = {
-            selected:[],
-            detail:''
-        };
+        responses[questionId] = { selected:[], detail:'' };
     }
-
-    let currentSelection =
-        responses[questionId].selected;
+    let currentSelection = responses[questionId].selected;
 
     if(isMultiple){
-
         if(currentSelection.includes(optionText)){
-
-            currentSelection =
-                currentSelection.filter(
-                    item => item !== optionText
-                );
-
+            currentSelection = currentSelection.filter(item => item !== optionText);
         } else {
-
             currentSelection.push(optionText);
         }
-
     } else {
-
         currentSelection = [optionText];
     }
-
-    responses[questionId].selected =
-        currentSelection;
-
+    responses[questionId].selected = currentSelection;
     renderCurrentStep();
 };
 
 window.updateDetail = function(questionId,text){
-
     if(!responses[questionId]){
-
-        responses[questionId] = {
-            selected:[],
-            detail:''
-        };
+        responses[questionId] = { selected:[], detail:'' };
     }
-
     responses[questionId].detail = text;
 };
 
 window.autoResizeTextarea = function(element){
-
     element.style.height = 'auto';
-    element.style.height =
-        (element.scrollHeight) + 'px';
+    element.style.height = (element.scrollHeight) + 'px';
 };
 
 window.sendDataToBackendSilently = async function(){
-
     const exportData = {
         fecha:new Date().toISOString(),
         respuestas:[]
     };
 
     experienceFlow.forEach(step => {
-
         if(step.type === 'question' && responses[step.id]){
-
             exportData.respuestas.push({
                 id_pregunta:step.id,
                 bloque:step.block,
@@ -793,44 +554,31 @@ window.sendDataToBackendSilently = async function(){
     });
 
     try{
-
         await fetch(
             "https://script.google.com/macros/s/AKfycbyHTT18jhFBd0XheNrwXpnsryEJhFeLEhXHU7JQfdfRp2A0LyWOx0BQEpapRwj7PyRW/exec",
             {
                 method:"POST",
                 redirect:"follow",
-
                 headers:{
                     "Content-Type":"text/plain;charset=utf-8"
                 },
-
                 body:JSON.stringify(exportData)
             }
         );
-
         console.log("Datos enviados correctamente");
-
     } catch(error){
-
-        console.error(
-            "Error enviando datos:",
-            error
-        );
+        console.error("Error enviando datos:", error);
     }
 };
 
 window.resetExperience = async function(){
-
     responses = {};
     await navigateTo(0);
 };
 
-document.addEventListener(
-    'DOMContentLoaded',
-    () => {
-        renderCurrentStep();
-    }
-);
+document.addEventListener('DOMContentLoaded', () => {
+    renderCurrentStep();
+});
 
 </script>
 
