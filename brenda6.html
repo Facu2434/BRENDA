@@ -1,9 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Caminos hacia adentro</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,45 +38,60 @@
 
     <style>
 
-     body {
-            background-color: transparent;
-            color: #1A181C;
-            overflow-x: hidden;
-            overflow-y: auto;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+        html,
+        body{
+            margin:0;
+            padding:0;
+            min-height:100%;
         }
 
-       body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
+        body{
+            position:relative;
+            color:#1A181C;
+            overflow-x:hidden;
+            overflow-y:auto;
 
-    background-color: #F2ECE7;
-    background-image: url('fondo.png');
+            -webkit-font-smoothing:antialiased;
+            -moz-osx-font-smoothing:grayscale;
+        }
 
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
+        /* CAPA DE FONDO REAL */
+        .background-layer{
+            position:fixed;
+            inset:0;
 
-    z-index: -1;
-    pointer-events: none;
+            width:100vw;
+            height:100dvh;
 
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
-    will-change: transform;
-}
+            background-image:url('fondo.png');
+            background-size:cover;
+            background-position:center center;
+            background-repeat:no-repeat;
 
-        @media (max-width: 768px) {
+            z-index:-10;
 
-    body::before {
+            pointer-events:none;
+        }
 
-        background-size: cover;
-        background-position: center top;
+        /* FIX MOBILE */
+        @media (max-width:768px){
 
-    }
+            .background-layer{
 
-}
+                position:fixed;
+
+                width:100vw;
+                height:100vh;
+
+                background-size:cover;
+                background-position:center top;
+
+                transform:translateZ(0);
+                -webkit-transform:translateZ(0);
+
+            }
+
+        }
 
         ::-webkit-scrollbar{
             width:4px;
@@ -95,6 +109,7 @@
         .slide-container{
             opacity:1;
             transform:translateY(0);
+
             transition:
                 opacity .3s ease-in-out,
                 transform .4s ease-out;
@@ -114,12 +129,14 @@
         .option-card{
             transition:all .2s ease;
             position:relative;
-            background-color:transparent;
+            background-color:rgba(255,255,255,.18);
+            backdrop-filter:blur(4px);
+
             border:1px solid #C2B9B5;
         }
 
         .option-card:hover{
-            background-color:rgba(197,174,211,.15);
+            background-color:rgba(197,174,211,.18);
             border-color:#C5AED3;
         }
 
@@ -134,10 +151,14 @@
             background:transparent;
             border:none;
             border-bottom:1px solid #C2B9B5;
+
             resize:none;
+
             transition:border-color .2s ease;
+
             line-height:1.6;
             color:#1A181C;
+
             overflow:hidden;
         }
 
@@ -168,6 +189,10 @@
 
 <body class="w-full flex flex-col relative min-h-screen">
 
+    <!-- FONDO -->
+    <div class="background-layer"></div>
+
+    <!-- PROGRESS -->
     <div id="progress-container"
          class="fixed top-0 left-0 w-full h-[3px] bg-transparent z-50 opacity-0 transition-opacity duration-500">
 
@@ -177,6 +202,7 @@
 
     </div>
 
+    <!-- APP -->
     <main id="app-container"
           class="flex-1 w-full flex flex-col items-center justify-center pt-8 md:pt-12 pb-8 px-6 md:px-12 max-w-5xl mx-auto relative z-10 min-h-[90vh]">
     </main>
@@ -760,7 +786,9 @@ window.sendDataToBackendSilently = async function(){
     };
 
     experienceFlow.forEach(step => {
+
         if(step.type === 'question' && responses[step.id]){
+
             exportData.respuestas.push({
                 id_pregunta:step.id,
                 bloque:step.block,
@@ -772,21 +800,29 @@ window.sendDataToBackendSilently = async function(){
     });
 
     try{
+
         await fetch(
             "https://script.google.com/macros/s/AKfycbyHTT18jhFBd0XheNrwXpnsryEJhFeLEhXHU7JQfdfRp2A0LyWOx0BQEpapRwj7PyRW/exec",
             {
-                method: "POST",
-                redirect: "follow", 
-                headers: {
-                    "Content-Type": "text/plain;charset=utf-8"
+                method:"POST",
+                redirect:"follow",
+
+                headers:{
+                    "Content-Type":"text/plain;charset=utf-8"
                 },
-                body: JSON.stringify(exportData)
+
+                body:JSON.stringify(exportData)
             }
         );
+
         console.log("Datos enviados correctamente");
 
     } catch(error){
-        console.error("Error enviando datos:", error);
+
+        console.error(
+            "Error enviando datos:",
+            error
+        );
     }
 };
 
