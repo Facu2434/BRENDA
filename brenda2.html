@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caminos hacia adentro</title>
+    
+    <!-- Fuentes tipográficas: Lora (Serif elegante) e Inter (Sans para UI) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuración personalizada de Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ash: {
+                            900: '#141312', /* Fondo base, más cálido que el negro puro */
+                            800: '#1E1D1B',
+                            700: '#2A2826',
+                            600: '#3D3B38',
+                        },
+                        sand: {
+                            DEFAULT: '#D6D3CD', /* Texto principal */
+                            muted: '#9A9791',   /* Texto secundario */
+                            dim: '#6E6C68'      /* Elementos muy sutiles */
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Lora', 'serif'],
+                    },
+                    transitionTimingFunction: {
+                        'contemplative': 'cubic-bezier(0.25, 0.8, 0.25, 1)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #141312;
+            color: #D6D3CD;
+            /* Scroll permitido pero estilizado para ser invisible/suave */
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Ocultar scrollbars para mantener inmersión */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2A2826;
+            border-radius: 4px;
+        }
+
+        /* Textura de ruido fotográfico para dar intimidad */
+        .noise-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.035;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        .slide-container {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.8s cubic-bezier(0.25, 0.8, 0.25, 1), 
+                        transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .slide-exit {
+            opacity: 0;
+            transform: translateY(-8px);
+            pointer-events: none;
+        }
+
+        .slide-enter {
+            opacity: 0;
+            transform: translateY(12px);
+        }
+
+        .option-card {
+            transition: all 0.5s ease;
+            position: relative;
+        }
+        
+        /* Indicador sutil a la izquierda en hover */
+        .option-card::before {
+            content: '';
+            position: absolute;
+            left: -1px;
+            top: 15%;
+            height: 70%;
+            width: 2px;
+            background-color: transparent;
+            transition: background-color 0.4s ease;
+        }
+
+        .option-card:hover {
+            background-color: rgba(255, 255, 255, 0.02);
+            border-color: #3D3B38;
+        }
+
+        .option-card.selected {
+            background-color: rgba(255, 255, 255, 0.04);
+            border-color: #6E6C68;
+            color: #ffffff;
+        }
+
+        .option-card.selected::before {
+            background-color: #9A9791;
+        }
+
+        /* Textarea como un diario íntimo */
+        .intimate-textarea {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #2A2826;
+            resize: none;
+            transition: border-color 0.5s ease;
+            line-height: 1.6;
+        }
+        
+        .intimate-textarea:focus {
+            outline: none;
+            border-bottom-color: #6E6C68;
+        }
+
+        /* Botón de continuar */
+        .btn-fade {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s ease;
+        }
+
+        .btn-fade.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body class="w-full flex flex-col relative min-h-screen">
+
+    <!-- Capa de textura sutil -->
+    <div class="noise-overlay"></div>
+
+    <!-- Barra de progreso casi invisible -->
+    <div id="progress-container" class="fixed top-0 left-0 w-full h-[2px] bg-transparent z-50 opacity-0 transition-opacity duration-1000">
+        <div id="progress-bar" class="h-full bg-sand-dim/40 w-0 transition-all duration-1000 ease-in-out"></div>
+    </div>
+
+    <main id="app-container" class="flex-1 w-full flex flex-col items-center pt-12 md:pt-20 pb-16 px-5 md:px-8 max-w-2xl mx-auto relative z-10">
+        <!-- El contenido se inyecta vía JS aquí -->
+    </main>
+
+    <script>
+        const experienceFlow = [
+            {
+                type: 'intro',
+                title: 'Caminos hacia adentro',
+                welcome: 'Un espacio para mirar con honestidad la forma en que habitamos ser hombres.',
+                notes: [
+                    'Completamente anónimo.',
+                    'No hay respuestas correctas.',
+                    'Tomate tu tiempo.'
+                ],
+                duration: '~ 5 min'
+            },
+            {
+                type: 'question',
+                id: 'q_crianza_1',
+                block: 'Crianza y mandatos',
+                question: '¿Qué mensajes sentís que más marcaron tu forma de vivir la masculinidad?',
+                multiple: true,
+                options: [
+                    'Los hombres no lloran',
+                    'Tenés que poder solo',
+                    'Mostrar emociones es debilidad',
+                    'El hombre tiene que sostener todo',
+                    'Otro'
+                ]
+            },
+            {
+                type: 'question',
+                id: 'q_crianza_2',
+                block: 'Crianza y mandatos',
+                question: '¿En qué área sentís más presión por sostener o rendir?',
+                multiple: false,
+                options: [
+                    'Trabajo',
+                    'Economía',
+                    'Familia',
+                    'Pareja',
+                    'Salud',
+                    'Expectativas personales'
+                ]
+            },
+            {
+                type: 'transition',
+                text: 'Muchas veces cargamos expectativas sin darnos cuenta.'
+            },
+            {
+                type: 'question',
+                id: 'q_miedos_1',
+                block: 'Miedos',
+                question: '¿Qué miedo aparece más seguido en tu vida cotidiana?',
+                multiple: false,
+                options: [
+                    'Fracasar',
+                    'Quedarme solo',
+                    'Perder el control',
+                    'Decepcionar a otros',
+                    'No saber manejar conflictos'
+                ]
+            },
+            {
+                type: 'question',
+                id: 'q_miedos_2',
+                block: 'Miedos',
+                question: '¿Qué hacés normalmente cuando algo emocional te supera?',
+                multiple: true, // Multiselección habilitada
+                options: [
+                    'Me aislo',
+                    'Me distraigo',
+                    'Me enojo',
+                    'Sigo funcionando como si nada',
+                    'Busco hablarlo'
+                ]
+            },
+            {
+                type: 'transition',
+                text: 'Los vínculos son el espejo donde más nos reflejamos.'
+            },
+            {
+                type: 'question',
+                id: 'q_vinculos_1',
+                block: 'Vínculos',
+                question: '¿Qué suele costarte más en tus relaciones?',
+                multiple: true,
+                options: [
+                    'Expresar emociones',
+                    'Pedir ayuda',
+                    'Poner límites',
+                    'Escuchar sin intentar resolver',
+                    'Afrontar conflictos'
+                ]
+            },
+            {
+                type: 'question',
+                id: 'q_vinculos_2',
+                block: 'Vínculos',
+                question: '¿Cómo reaccionás frente a conversaciones incómodas?',
+                multiple: false,
+                options: [
+                    'Las evito',
+                    'Cambio de tema',
+                    'Me cierro',
+                    'Exploto',
+                    'Intento hablarlas'
+                ]
+            },
+            {
+                type: 'transition',
+                text: 'Reconocer lo que sentimos es el primer paso para habitarlo.'
+            },
+            {
+                type: 'question',
+                id: 'q_emocional_1',
+                block: 'Mundo emocional',
+                question: '¿Qué emoción sentís más difícil de expresar?',
+                multiple: false,
+                options: [
+                    'Tristeza',
+                    'Miedo',
+                    'Afecto',
+                    'Culpa',
+                    'Vulnerabilidad'
+                ]
+            },
+            {
+                type: 'question',
+                id: 'q_emocional_2',
+                block: 'Mundo emocional',
+                question: '¿Qué hacés con lo que sentís cuando no sabés cómo expresarlo?',
+                multiple: true,
+                options: [
+                    'Lo guardo',
+                    'Me desconecto',
+                    'Trabajo más',
+                    'Me enojo',
+                    'Intento escribir o hablar'
+                ]
+            },
+            {
+                type: 'outro'
+            }
+        ];
+
+        let currentIndex = 0;
+        let responses = {}; // Guarda { id: { selected: ["Opción"], detail: "Texto" } }
+        let totalQuestions = experienceFlow.filter(step => step.type === 'question').length;
+
+        const appContainer = document.getElementById('app-container');
+        const progressContainer = document.getElementById('progress-container');
+        const progressBar = document.getElementById('progress-bar');
+
+        async function navigateTo(newIndex) {
+            if (newIndex < 0 || newIndex >= experienceFlow.length) return;
+
+            const currentContent = document.getElementById('slide-content');
+            if (currentContent) {
+                currentContent.classList.add('slide-exit');
+                await new Promise(resolve => setTimeout(resolve, 600)); // Pausa más larga
+            }
+
+            currentIndex = newIndex;
+            window.scrollTo({ top: 0, behavior: 'smooth' }); // Asegurar vista limpia
+            renderCurrentStep();
+            updateProgress();
+
+            const newContent = document.getElementById('slide-content');
+            newContent.classList.add('slide-enter');
+            void newContent.offsetWidth; 
+            newContent.classList.remove('slide-enter');
+        }
+
+        function updateProgress() {
+            const currentStep = experienceFlow[currentIndex];
+            if (currentStep.type === 'intro' || currentStep.type === 'outro') {
+                progressContainer.style.opacity = '0';
+                return;
+            }
+            progressContainer.style.opacity = '1';
+            let questionsSeen = 0;
+            for (let i = 0; i <= currentIndex; i++) {
+                if (experienceFlow[i].type === 'question') questionsSeen++;
+            }
+            const percentage = (questionsSeen / totalQuestions) * 100;
+            progressBar.style.width = `${percentage}%`;
+        }
+
+        function buildIntro(data) {
+            return `
+                <div id="slide-content" class="slide-container w-full flex flex-col justify-center items-center text-center mt-10 md:mt-20">
+                    <h1 class="font-serif text-3xl md:text-4xl text-sand tracking-wide mb-6 font-light">
+                        ${data.title}
+                    </h1>
+                    <p class="font-sans text-base text-sand-muted mb-12 max-w-sm font-light leading-relaxed">
+                        ${data.welcome}
+                    </p>
+                    
+                    <div class="flex flex-col space-y-3 mb-16 text-sm text-sand-dim">
+                        ${data.notes.map(note => `<span>${note}</span>`).join('')}
+                        <span class="mt-4 italic">${data.duration}</span>
+                    </div>
+
+                    <button onclick="navigateTo(currentIndex + 1)" class="group text-sand-muted hover:text-sand transition-colors duration-500 font-sans tracking-widest uppercase text-xs">
+                        Comenzar
+                        <span class="block w-0 group-hover:w-full h-[1px] bg-sand-muted transition-all duration-500 mt-2 mx-auto"></span>
+                    </button>
+                </div>
+            `;
+        }
+
+        function buildQuestion(data) {
+            const savedState = responses[data.id] || { selected: [], detail: '' };
+            const hasSelection = savedState.selected.length > 0;
+            const btnVisibleClass = hasSelection ? 'visible' : '';
+            
+            // Indicador sutil de selección múltiple
+            const selectionHint = data.multiple ? '<span class="text-sand-dim text-xs ml-2 font-sans italic">(podés elegir varias)</span>' : '';
+
+            const optionsHtml = data.options.map(opt => {
+                const isSelected = savedState.selected.includes(opt);
+                const selectedClass = isSelected ? 'selected' : '';
+                return `
+                    <div onclick="selectOption('${data.id}', '${opt}', ${data.multiple})" 
+                         class="option-card ${selectedClass} w-full py-3 px-4 rounded-lg border border-transparent bg-ash-800/40 cursor-pointer flex items-center group">
+                        <span class="font-sans text-sm md:text-base text-sand-muted group-hover:text-sand transition-colors w-full pr-4">${opt}</span>
+                        ${isSelected ? '<span class="text-sand-dim text-xs opacity-70">✓</span>' : ''}
+                    </div>
+                `;
+            }).join('');
+
+            return `
+                <div id="slide-content" class="slide-container w-full flex flex-col w-full max-w-xl">
+                    
+                    <div class="mb-10 mt-4 md:mt-8">
+                        <span class="block font-sans text-[10px] uppercase tracking-[0.15em] text-sand-dim mb-4">
+                            ${data.block}
+                        </span>
+                        <h2 class="font-serif text-xl md:text-2xl text-sand leading-relaxed font-light">
+                            ${data.question} ${selectionHint}
+                        </h2>
+                    </div>
+
+                    <div id="options-${data.id}" class="flex flex-col gap-2 w-full mb-8">
+                        ${optionsHtml}
+                    </div>
+
+                    <div class="w-full mb-12">
+                        <textarea id="detail-${data.id}" 
+                            class="intimate-textarea w-full text-sand-muted py-2 text-sm font-sans" 
+                            rows="1"
+                            placeholder="Si querés, podés profundizar acá..."
+                            oninput="autoResizeTextarea(this); updateDetail('${data.id}', this.value)"
+                        >${savedState.detail}</textarea>
+                    </div>
+
+                    <div class="flex items-center justify-between mt-4">
+                        <button onclick="navigateTo(currentIndex - 1)" class="text-sand-dim hover:text-sand-muted text-xs uppercase tracking-widest transition-colors">
+                            Volver
+                        </button>
+                        
+                        <button id="btn-continue-${data.id}" onclick="navigateTo(currentIndex + 1)" class="btn-fade ${btnVisibleClass} text-sand hover:text-white text-xs uppercase tracking-widest transition-colors font-light">
+                            Continuar
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function buildTransition(data) {
+            return `
+                <div id="slide-content" class="slide-container w-full flex flex-col justify-center items-center text-center mt-24 md:mt-32">
+                    <p class="font-serif text-xl md:text-2xl text-sand-muted italic font-light leading-relaxed mb-16 max-w-sm">
+                        "${data.text}"
+                    </p>
+                    
+                    <button onclick="navigateTo(currentIndex + 1)" class="text-sand-dim hover:text-sand text-xs uppercase tracking-widest transition-colors duration-500">
+                        Continuar
+                    </button>
+                </div>
+            `;
+        }
+
+        function buildOutro() {
+            return `
+                <div id="slide-content" class="slide-container w-full flex flex-col justify-center items-center text-center mt-10 md:mt-20">
+                    <h2 class="font-serif text-2xl md:text-3xl text-sand mb-6 font-light">
+                        Gracias por este rato.
+                    </h2>
+                    <p class="font-sans text-sm text-sand-muted mb-16 max-w-sm font-light leading-relaxed">
+                        Mirar hacia adentro es un acto de valentía silenciosa. Este registro es para vos.
+                    </p>
+
+                    <div class="flex flex-col gap-4 w-full max-w-[240px]">
+                        <button onclick="finishAndExport()" class="w-full py-3 rounded border border-ash-600 hover:border-sand-dim bg-ash-800/30 text-sand hover:text-white transition-all duration-300 font-sans text-sm font-light">
+                            Guardar mis respuestas
+                        </button>
+                        
+                        <button onclick="resetExperience()" class="w-full py-3 text-sand-dim hover:text-sand-muted transition-colors font-sans text-xs uppercase tracking-widest mt-4">
+                            Reiniciar
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderCurrentStep() {
+            const step = experienceFlow[currentIndex];
+            let html = '';
+
+            switch (step.type) {
+                case 'intro': html = buildIntro(step); break;
+                case 'question': html = buildQuestion(step); break;
+                case 'transition': html = buildTransition(step); break;
+                case 'outro': html = buildOutro(); break;
+            }
+
+            appContainer.innerHTML = html;
+            const textareas = appContainer.querySelectorAll('textarea');
+            textareas.forEach(ta => autoResizeTextarea(ta));
+        }
+
+        window.selectOption = function(questionId, optionText, isMultiple) {
+            if (!responses[questionId]) {
+                responses[questionId] = { selected: [], detail: '' };
+            }
+
+            let currentSelection = responses[questionId].selected;
+
+            if (isMultiple) {
+                // Lógica Toggle para multiselección
+                if (currentSelection.includes(optionText)) {
+                    currentSelection = currentSelection.filter(item => item !== optionText);
+                } else {
+                    currentSelection.push(optionText);
+                }
+            } else {
+                // Lógica Radio para selección única
+                currentSelection = [optionText];
+            }
+
+            responses[questionId].selected = currentSelection;
+            
+            // Re-renderizar la pregunta actual para reflejar cambios limpios
+            renderCurrentStep();
+        };
+
+        window.updateDetail = function(questionId, text) {
+            if (!responses[questionId]) {
+                responses[questionId] = { selected: [], detail: '' };
+            }
+            responses[questionId].detail = text;
+        };
+
+        window.autoResizeTextarea = function(element) {
+            element.style.height = 'auto';
+            element.style.height = (element.scrollHeight) + 'px';
+        };
+
+        window.finishAndExport = async function() {
+            // 1. Estructurar los datos
+            const exportData = {
+                fecha: new Date().toISOString(),
+                reflexiones: []
+            };
+
+            experienceFlow.forEach(step => {
+                if (step.type === 'question' && responses[step.id]) {
+                    exportData.reflexiones.push({
+                        bloque: step.block,
+                        pregunta: step.question,
+                        respuestas: responses[step.id].selected, // Ahora es un Array
+                        notas: responses[step.id].detail || ""
+                    });
+                }
+            });
+
+            // 2. Descarga de archivo JSON (Comportamiento actual)
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportData, null, 2));
+            const downloadNode = document.createElement('a');
+            downloadNode.setAttribute("href", dataStr);
+            downloadNode.setAttribute("download", "mis_reflexiones.json");
+            document.body.appendChild(downloadNode);
+            downloadNode.click();
+            downloadNode.remove();
+
+            // 3. (OPCIONAL) Envío a Webhook (Formspree, Zapier, Make, Sheets)
+            // Descomentar y configurar la URL cuando haya un backend/servicio conectado.
+            /*
+            try {
+                const webhookUrl = "TU_URL_DE_WEBHOOK_AQUI";
+                await fetch(webhookUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(exportData)
+                });
+                console.log("Datos enviados correctamente al servidor.");
+            } catch (error) {
+                console.error("Error al enviar datos: ", error);
+            }
+            */
+        };
+
+        window.resetExperience = async function() {
+            responses = {};
+            await navigateTo(0);
+        };
+
+        // Iniciar
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCurrentStep();
+        });
+
+    </script>
+</body>
+</html>
