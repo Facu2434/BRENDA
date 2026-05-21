@@ -1,3 +1,8 @@
+Acá tenés el código HTML completo con la corrección aplicada en la función fetch para que Google Apps Script reciba la información sin problemas de seguridad.
+
+Copialo y reemplazá tu archivo actual con esto:
+
+HTML
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -757,12 +762,9 @@ window.sendDataToBackendSilently = async function(){
             "https://script.google.com/macros/s/AKfycbyHTT18jhFBd0XheNrwXpnsryEJhFeLEhXHU7JQfdfRp2A0LyWOx0BQEpapRwj7PyRW/exec",
             {
                 method:"POST",
-                mode:"no-cors",
-
                 headers:{
-                    "Content-Type":"application/json"
+                    "Content-Type":"text/plain;charset=utf-8"
                 },
-
                 body:JSON.stringify(exportData)
             }
         );
