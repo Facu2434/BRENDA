@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>BRENDA — Psicología y procesos humanos</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    padding:0;
+
+    background:#F2ECE7;
+    color:#1A181C;
+
+    font-family:'Inter',sans-serif;
+
+    overflow-x:hidden;
+}
+
+/* FONDO */
+#bg-image{
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:100vw;
+    height:100vh;
+
+    object-fit:cover;
+    object-position:center;
+
+    z-index:-1;
+
+    opacity:.22;
+
+    pointer-events:none;
+}
+
+/* NAV */
+
+.navbar{
+    position:fixed;
+    top:0;
+    left:0;
+
+    width:100%;
+
+    backdrop-filter:blur(12px);
+
+    background:rgba(242,236,231,.7);
+
+    border-bottom:1px solid rgba(0,0,0,.06);
+
+    z-index:1000;
+}
+
+.nav-inner{
+    max-width:1200px;
+    margin:auto;
+
+    padding:18px 28px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.logo{
+    font-family:'Lora',serif;
+    font-size:24px;
+    font-weight:600;
+    letter-spacing:.04em;
+}
+
+.nav-links{
+    display:flex;
+    gap:26px;
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:#4A464C;
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:.14em;
+    font-weight:600;
+
+    transition:.2s;
+}
+
+.nav-links a:hover{
+    opacity:.6;
+}
+
+/* HERO */
+
+.hero{
+    min-height:100vh;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:140px 28px 80px;
+}
+
+.hero-inner{
+    max-width:980px;
+    text-align:center;
+}
+
+.hero-kicker{
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.25em;
+
+    color:#716C73;
+
+    margin-bottom:22px;
+
+    font-weight:700;
+}
+
+.hero h1{
+    font-family:'Lora',serif;
+
+    font-size:clamp(42px,8vw,92px);
+
+    line-height:1.02;
+
+    margin:0 0 28px;
+}
+
+.hero p{
+    max-width:760px;
+
+    margin:auto;
+
+    font-size:19px;
+    line-height:1.8;
+
+    color:#4A464C;
+}
+
+.hero-buttons{
+    margin-top:48px;
+
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:18px;
+}
+
+.btn-primary,
+.btn-secondary{
+
+    padding:16px 28px;
+
+    border-radius:999px;
+
+    text-decoration:none;
+
+    transition:.25s;
+
+    font-size:13px;
+
+    letter-spacing:.14em;
+
+    text-transform:uppercase;
+
+    font-weight:700;
+}
+
+.btn-primary{
+    background:#1A181C;
+    color:white;
+}
+
+.btn-primary:hover{
+    transform:translateY(-2px);
+    opacity:.9;
+}
+
+.btn-secondary{
+    border:1px solid rgba(0,0,0,.15);
+    color:#1A181C;
+    background:rgba(255,255,255,.3);
+}
+
+.btn-secondary:hover{
+    background:white;
+}
+
+/* SECTIONS */
+
+.section{
+    padding:120px 28px;
+}
+
+.section-inner{
+    max-width:1180px;
+    margin:auto;
+}
+
+.section-header{
+    margin-bottom:60px;
+}
+
+.section-kicker{
+    text-transform:uppercase;
+    letter-spacing:.18em;
+
+    font-size:12px;
+    font-weight:700;
+
+    color:#716C73;
+
+    margin-bottom:16px;
+}
+
+.section-title{
+    font-family:'Lora',serif;
+
+    font-size:48px;
+    line-height:1.1;
+
+    margin:0 0 18px;
+}
+
+.section-text{
+    max-width:760px;
+
+    font-size:18px;
+    line-height:1.8;
+
+    color:#4A464C;
+}
+
+/* GRID */
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:28px;
+}
+
+.card{
+    background:rgba(255,255,255,.45);
+
+    backdrop-filter:blur(10px);
+
+    border:1px solid rgba(0,0,0,.06);
+
+    border-radius:28px;
+
+    padding:34px;
+
+    transition:.25s;
+}
+
+.card:hover{
+    transform:translateY(-4px);
+
+    background:rgba(255,255,255,.6);
+}
+
+.card h3{
+    font-family:'Lora',serif;
+    font-size:28px;
+
+    margin:0 0 18px;
+}
+
+.card p{
+    color:#4A464C;
+    line-height:1.7;
+    margin-bottom:24px;
+}
+
+.card a{
+    text-decoration:none;
+
+    font-size:12px;
+
+    letter-spacing:.14em;
+
+    text-transform:uppercase;
+
+    font-weight:700;
+
+    color:#1A181C;
+}
+
+/* CTA */
+
+.cta{
+    text-align:center;
+}
+
+.cta-box{
+    max-width:900px;
+    margin:auto;
+
+    background:rgba(255,255,255,.5);
+
+    border-radius:36px;
+
+    padding:80px 40px;
+
+    backdrop-filter:blur(10px);
+}
+
+.cta-box h2{
+    font-family:'Lora',serif;
+
+    font-size:56px;
+
+    line-height:1.1;
+
+    margin:0 0 24px;
+}
+
+.cta-box p{
+    max-width:700px;
+    margin:auto;
+
+    line-height:1.8;
+
+    color:#4A464C;
+
+    font-size:18px;
+}
+
+/* FOOTER */
+
+footer{
+    padding:60px 28px;
+
+    text-align:center;
+
+    color:#716C73;
+
+    font-size:14px;
+}
+
+@media(max-width:768px){
+
+    .nav-links{
+        display:none;
+    }
+
+    .hero{
+        padding-top:120px;
+    }
+
+    .hero p{
+        font-size:17px;
+    }
+
+    .section{
+        padding:90px 24px;
+    }
+
+    .section-title{
+        font-size:38px;
+    }
+
+    .cta-box{
+        padding:60px 26px;
+    }
+
+    .cta-box h2{
+        font-size:40px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<img src="fondo.png" id="bg-image" alt="">
+
+<!-- NAV -->
+
+<header class="navbar">
+
+    <div class="nav-inner">
+
+        <div class="logo">
+            BRENDA
+        </div>
+
+        <nav class="nav-links">
+            <a href="#cuestionario">Cuestionario</a>
+            <a href="#recursos">Recursos</a>
+            <a href="#cursos">Cursos</a>
+            <a href="#talleres">Talleres</a>
+            <a href="#membresia">Membresía</a>
+        </nav>
+
+    </div>
+
+</header>
+
+<!-- HERO -->
+
+<section class="hero">
+
+    <div class="hero-inner">
+
+        <div class="hero-kicker">
+            Psicología · Procesos humanos · Regulación emocional
+        </div>
+
+        <h1>
+            Un espacio para comprender lo que nos pasa.
+        </h1>
+
+        <p>
+            Recursos, experiencias interactivas, talleres y procesos educativos orientados al bienestar emocional, los vínculos y el desarrollo humano desde una mirada clínica, contemporánea y accesible.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="brenda6.html" class="btn-primary">
+                Ingresar al cuestionario
+            </a>
+
+            <a href="#recursos" class="btn-secondary">
+                Explorar recursos
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- CUESTIONARIO -->
+
+<section class="section" id="cuestionario">
+
+    <div class="section-inner">
+
+        <div class="section-header">
+
+            <div class="section-kicker">
+                Experiencia interactiva
+            </div>
+
+            <h2 class="section-title">
+                Caminos hacia adentro
+            </h2>
+
+            <p class="section-text">
+                Un módulo reflexivo diseñado para explorar emociones, vínculos, mandatos y patrones personales. Las respuestas permiten generar estadísticas y orientar recursos psicoeducativos personalizados.
+            </p>
+
+        </div>
+
+        <div class="grid">
+
+            <div class="card">
+
+                <h3>
+                    Cuestionario clínico
+                </h3>
+
+                <p>
+                    Experiencia interactiva secuencial con enfoque introspectivo y registro estadístico anónimo.
+                </p>
+
+                <a href="brenda6.html">
+                    Abrir módulo
+                </a>
+
+            </div>
+
+            <div class="card">
+
+                <h3>
+                    Estadísticas
+                </h3>
+
+                <p>
+                    Visualización de patrones colectivos y tendencias emocionales obtenidas a partir de los registros.
+                </p>
+
+                <a href="#">
+                    Ver análisis
+                </a>
+
+            </div>
+
+            <div class="card">
+
+                <h3>
+                    Recomendaciones
+                </h3>
+
+                <p>
+                    Derivación futura de ejercicios, talleres y materiales según respuestas y áreas de dificultad.
+                </p>
+
+                <a href="#">
+                    Próximamente
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- RECURSOS -->
+
+<section class="section" id="recursos">
+
+    <div class="section-inner">
+
+        <div class="section-header">
+
+            <div class="section-kicker">
+                Biblioteca
+            </div>
+
+            <h2 class="section-title">
+                Recursos gratuitos
+            </h2>
+
+            <p class="section-text">
+                Materiales breves y accesibles orientados a ansiedad, regulación emocional, ACT, vínculos, comunicación y bienestar psicológico.
+            </p>
+
+        </div>
+
+        <div class="grid">
+
+            <div class="card">
+                <h3>Guías PDF</h3>
+                <p>Material descargable con ejercicios y herramientas clínicas.</p>
+                <a href="#">Explorar</a>
+            </div>
+
+            <div class="card">
+                <h3>Audioguías</h3>
+                <p>Audios breves de regulación emocional y mindfulness.</p>
+                <a href="#">Escuchar</a>
+            </div>
+
+            <div class="card">
+                <h3>Worksheets</h3>
+                <p>Ejercicios prácticos para trabajo personal y terapéutico.</p>
+                <a href="#">Descargar</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- CURSOS -->
+
+<section class="section" id="cursos">
+
+    <div class="section-inner">
+
+        <div class="section-header">
+
+            <div class="section-kicker">
+                Formación
+            </div>
+
+            <h2 class="section-title">
+                Cursos y programas
+            </h2>
+
+            <p class="section-text">
+                Estructura tipo campus con módulos grabados, ejercicios, recursos descargables y seguimiento de progreso.
+            </p>
+
+        </div>
+
+        <div class="grid">
+
+            <div class="card">
+                <h3>Ansiedad y evitación</h3>
+                <p>Curso introductorio basado en ACT y regulación emocional.</p>
+                <a href="#">Ver curso</a>
+            </div>
+
+            <div class="card">
+                <h3>Vínculos y comunicación</h3>
+                <p>Herramientas para conversaciones difíciles y conexión emocional.</p>
+                <a href="#">Ver curso</a>
+            </div>
+
+            <div class="card">
+                <h3>Masculinidades</h3>
+                <p>Exploración de mandatos, identidad emocional y vulnerabilidad.</p>
+                <a href="#">Ver curso</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- TALLERES -->
+
+<section class="section" id="talleres">
+
+    <div class="section-inner">
+
+        <div class="section-header">
+
+            <div class="section-kicker">
+                Encuentros
+            </div>
+
+            <h2 class="section-title">
+                Talleres y espacios grupales
+            </h2>
+
+            <p class="section-text">
+                Experiencias en vivo orientadas a reflexión, herramientas clínicas y trabajo vincular.
+            </p>
+
+        </div>
+
+        <div class="grid">
+
+            <div class="card">
+                <h3>Taller ACT</h3>
+                <p>Flexibilidad psicológica y manejo de evitación experiencial.</p>
+                <a href="#">Inscribirme</a>
+            </div>
+
+            <div class="card">
+                <h3>Grupo de masculinidades</h3>
+                <p>Espacio reflexivo y psicoeducativo para hombres.</p>
+                <a href="#">Reservar lugar</a>
+            </div>
+
+            <div class="card">
+                <h3>Regulación emocional</h3>
+                <p>Herramientas prácticas para ansiedad y sobrecarga emocional.</p>
+                <a href="#">Ver fechas</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- MEMBRESIA -->
+
+<section class="section" id="membresia">
+
+    <div class="section-inner">
+
+        <div class="cta">
+
+            <div class="cta-box">
+
+                <h2>
+                    Membresía y campus privado
+                </h2>
+
+                <p>
+                    Acceso a contenido exclusivo, clases nuevas mensuales, ejercicios, talleres grabados y recursos clínicos organizados en un espacio educativo continuo.
+                </p>
+
+                <div class="hero-buttons">
+
+                    <a href="#" class="btn-primary">
+                        Acceder
+                    </a>
+
+                    <a href="#" class="btn-secondary">
+                        Más información
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<footer>
+
+    BRENDA · Psicología y procesos humanos
+
+</footer>
+
+</body>
+</html>
