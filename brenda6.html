@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
-    <title>Caminos hacia adentro</title>
+    <title>PsiConHombres</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -183,7 +183,7 @@
 <script>
 
 const getSeparatorHtml = () => `
-    <div class="flex items-center justify-center space-x-3 my-5 md:my-6 opacity-70">
+    <div class="flex items-center justify-center space-x-3 my-5 md:my-8 opacity-70">
         <div class="h-[1px] w-12 bg-clinical-taupe/40"></div>
         <svg class="w-3.5 h-3.5 text-clinical-taupe" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.5v15m7.5-7.5h-15"></path>
@@ -195,14 +195,21 @@ const getSeparatorHtml = () => `
 const experienceFlow = [
 {
     type:'intro',
-    title:'Bienvenido a este espacio',
-    welcome:'Un lugar seguro y confidencial para observar la forma en que habitamos nuestras emociones y vínculos.',
+    title:'PsiConHombres',
+    content:[
+        '¡Hola! Bienvenido a este espacio.',
+        'Antes de empezar, te invito hacer una pequeña pausa.',
+        'Si te parece bien, tomate un momento para registrar cómo estás acá y ahora. Hacé 5 respiraciones profundas: inhalá en 4 segundos, retené el aire 4 segundos y exhalá lentamente en 6 segundos.',
+        'Notá el aire, soltá un poco el piloto automático del día y disponete a conectar con vos mismo desde la tranquilidad.',
+        'El objetivo del formulario es comprender cómo las exigencias, mandatos y expectativas del sistema (lo que históricamente se les enseñó sobre <strong class="font-bold text-clinical-slate">"ser un verdadero varón"</strong>) impactan en tu salud psicológica, tus emociones y la forma en que te vinculás con los demás.',
+        'A veces, la presión por ser siempre fuertes, proveedores, autosuficientes o por reprimir lo que sentimos se vuelve una carga invisible que genera un gran malestar.',
+        'Quiero explorar eso con vos.',
+        '¿Te animás?'
+    ],
     notes:[
-        'Antes de empezar, te invito a hacer una pausa: Inhalá en 4 segundos, retené 4 segundos y exhalá lentamente en 6.',
-        'El objetivo es comprender cómo las exigencias sobre "ser un verdadero varón" impactan en tu salud psicológica y tus vínculos.',
-        'Es 100% anónimo: No registramos nombres ni datos que puedan identificarte.',
-        'No hay respuestas correctas ni incorrectas: Nos interesa tu experiencia real, sin filtros.',
-        'Tu honestidad ayuda a construir herramientas terapéuticas más empáticas y efectivas.'
+        '<strong class="font-bold text-clinical-slate">Es 100% anónimo:</strong> No registramos nombres, correos ni datos que puedan identificarte.',
+        '<strong class="font-bold text-clinical-slate">No hay respuestas correctas ni incorrectas:</strong> Nos interesa tu experiencia real, sin filtros.',
+        '<strong class="font-bold text-clinical-slate">Tu honestidad es valiosa:</strong> Responder con la mayor sinceridad posible me ayuda a construir herramientas terapéuticas más empáticas y efectivas para los varones.'
     ]
 },
 {
@@ -237,7 +244,7 @@ const experienceFlow = [
     type:'question',
     id:'q_regulacion_3',
     block:'Regulación emocional',
-    question:'¿Qué tan fácil o difícil te resulta identificar exactamente qué emoción estás sintiendo (ej. distinguir si es tristeza, miedo o frustración, y no solo "bronca")?',
+    question:'¿Qué tan fácil o difícil te resulta <strong class="font-bold">identificar exactamente qué emoción estás sintiendo</strong> (ej. distinguir si es tristeza, miedo o frustración, y no solo "bronca")?',
     multiple:false,
     options:[
         'Muy fácil',
@@ -248,7 +255,7 @@ const experienceFlow = [
 },
 {
     type:'transition',
-    text:'Aislarse emocionalmente es una respuesta común, pero contar con espacios seguros hace una gran diferencia.'
+    text:'Aislarse emocionalmente es una respuesta común, pero <strong class="font-bold">contar con espacios seguros hace una gran diferencia.</strong>'
 },
 {
     type:'question',
@@ -269,7 +276,7 @@ const experienceFlow = [
     type:'question',
     id:'q_vinculos_2',
     block:'Red de Apoyo y Vínculos',
-    question:'Pensando en tus amigos varones más cercanos, ¿con qué frecuencia hablan de temas profundos, miedos, inseguridades o crisis personales?',
+    question:'Pensando en tus amigos varones más cercanos, ¿con qué frecuencia hablan de <strong class="font-bold">temas profundos, miedos, inseguridades o crisis personales</strong>?',
     multiple:false,
     options:[
         'Seguido (es un espacio donde podemos mostrarnos vulnerables)',
@@ -282,7 +289,7 @@ const experienceFlow = [
     type:'question',
     id:'q_vinculos_3',
     block:'Red de Apoyo y Vínculos',
-    question:'¿Alguna vez evitaste contarle un problema a un amigo varón por miedo a ser juzgado, parecer "débil" o incomodarlo?',
+    question:'¿Alguna vez evitaste contarle un problema a un amigo varón por <strong class="font-bold">miedo a ser juzgado, parecer "débil" o incomodarlo</strong>?',
     multiple:false,
     options:[
         'Sí, me pasó muchas veces',
@@ -292,7 +299,7 @@ const experienceFlow = [
 },
 {
     type:'transition',
-    text:'A veces, cargar con los mandatos ajenos nos aleja de la forma en la que realmente queremos vivir.'
+    text:'A veces, cargar con los mandatos ajenos nos aleja de <strong class="font-bold">la forma en la que realmente queremos vivir.</strong>'
 },
 {
     type:'question',
@@ -325,7 +332,7 @@ const experienceFlow = [
 },
 {
     type:'transition',
-    text:'Reflexionar sobre nuestra salud mental nos abre puertas a nuevas herramientas de bienestar.'
+    text:'Reflexionar sobre nuestra salud mental nos abre puertas a <strong class="font-bold">nuevas herramientas de bienestar.</strong>'
 },
 {
     type:'question',
@@ -344,7 +351,7 @@ const experienceFlow = [
     type:'question',
     id:'q_taller_1',
     block:'Espacios Grupales',
-    question:'¿Qué tan viable te resultaría sumarte a un taller VIRTUAL y QUINCENAL junto a otros varones para trabajar regulación emocional y revisar creencias sobre el "ser varón"?',
+    question:'¿Qué tan viable te resultaría sumarte a un <strong class="font-bold">taller VIRTUAL y QUINCENAL</strong> junto a otros varones para trabajar regulación emocional y revisar creencias sobre el "ser varón"?',
     multiple:false,
     options:[
         'Muy viable / Me re interesaría',
@@ -436,18 +443,23 @@ function updateProgress(){
 
 function buildIntro(data){
 return `
-<div id="slide-content" class="slide-container w-full max-w-2xl flex flex-col justify-center items-center text-center">
-    <h1 class="font-serif text-3xl md:text-5xl text-clinical-slate mb-4 font-semibold tracking-tight">
+<div id="slide-content" class="slide-container w-full max-w-4xl flex flex-col justify-center items-center text-center px-4 md:px-8">
+    <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-clinical-slate mb-6 md:mb-8 font-semibold tracking-tight">
         ${data.title}
     </h1>
+    
     ${getSeparatorHtml()}
-    <p class="font-serif italic text-lg md:text-xl text-clinical-taupe mb-8 max-w-md font-medium leading-relaxed">
-        ${data.welcome}
-    </p>
-    <div class="flex flex-col space-y-2 mb-12 text-sm text-clinical-taupe font-sans font-medium">
-        ${data.notes.map(note => `<span>${note}</span>`).join('')}
+
+    <div class="flex flex-col space-y-5 md:space-y-6 text-clinical-taupe text-[15px] md:text-[17px] lg:text-[19px] font-serif leading-relaxed md:leading-loose max-w-3xl text-center my-6 md:my-8">
+        ${data.content.map(p => `<p>${p}</p>`).join('')}
     </div>
-    <button onclick="navigateTo(currentIndex + 1)" class="group text-clinical-slate hover:text-clinical-taupe transition-colors duration-300 font-sans tracking-[0.2em] uppercase text-xs font-bold">
+
+    <div class="flex flex-col space-y-4 mb-14 text-[13.5px] md:text-[15px] text-clinical-taupe font-sans font-medium max-w-2xl mx-auto text-left w-full mt-4">
+        <span class="block font-sans text-xs md:text-sm uppercase tracking-[0.2em] text-clinical-slate font-bold mb-3 text-center opacity-80">Información importante</span>
+        ${data.notes.map(note => `<div class="flex items-start leading-relaxed md:leading-loose"><span class="mr-3 text-clinical-slate">•</span><span>${note}</span></div>`).join('')}
+    </div>
+
+    <button onclick="navigateTo(currentIndex + 1)" class="group text-clinical-slate hover:text-clinical-taupe transition-colors duration-300 font-sans tracking-[0.2em] uppercase text-xs md:text-sm font-bold">
         Comenzar recorrido
         <span class="block w-0 group-hover:w-full h-[1.5px] bg-clinical-slate transition-all duration-300 mt-2 mx-auto"></span>
     </button>
@@ -460,15 +472,15 @@ const savedState = responses[data.id] || { selected:[], detail:'' };
 const hasSelection = savedState.selected.length > 0;
 const btnVisibleClass = hasSelection ? 'visible' : '';
 const selectionHint = data.multiple
-    ? '<span class="block text-clinical-taupe text-[11px] md:text-xs font-sans mt-3 font-semibold tracking-normal">(Podés seleccionar varias opciones)</span>'
+    ? '<span class="block text-clinical-taupe text-[11px] md:text-xs font-sans mt-4 font-semibold tracking-normal">(Podés seleccionar varias opciones)</span>'
     : '';
 
 const optionsHtml = data.options.map(opt => {
     const isSelected = savedState.selected.includes(opt);
     const selectedClass = isSelected ? 'selected' : '';
     return `
-        <div onclick="selectOption('${data.id}','${opt}',${data.multiple})" class="option-card ${selectedClass} w-full py-2.5 px-4 rounded-xl cursor-pointer flex items-center justify-center text-center">
-            <span class="font-sans text-sm md:text-[15px] transition-colors leading-tight">
+        <div onclick="selectOption('${data.id}','${opt}',${data.multiple})" class="option-card ${selectedClass} w-full py-3 px-4 md:py-3.5 md:px-5 rounded-xl cursor-pointer flex items-center justify-center text-center">
+            <span class="font-sans text-[14px] md:text-[15px] transition-colors leading-tight">
                 ${opt}
             </span>
         </div>
@@ -476,25 +488,25 @@ const optionsHtml = data.options.map(opt => {
 }).join('');
 
 return `
-<div id="slide-content" class="slide-container w-full flex flex-col md:flex-row gap-8 md:gap-16 max-w-4xl mx-auto items-start justify-center pt-2 md:pt-6">
-    <div class="w-full md:w-[45%] flex flex-col text-center md:text-left">
-        <span class="block font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] text-clinical-taupe font-bold mb-3">
+<div id="slide-content" class="slide-container w-full flex flex-col md:flex-row gap-8 md:gap-12 lg:gap-16 max-w-5xl mx-auto items-start justify-center pt-2 md:pt-6">
+    <div class="w-full md:w-[50%] lg:w-[55%] flex flex-col text-center md:text-left md:pr-4 lg:pr-8">
+        <span class="block font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] text-clinical-taupe font-bold mb-3 md:mb-4">
             ${data.block}
         </span>
-        <h2 class="font-serif text-xl md:text-3xl text-clinical-slate leading-snug md:leading-tight font-semibold">
+        <h2 class="font-serif text-xl md:text-2xl lg:text-[28px] text-clinical-slate leading-snug md:leading-relaxed lg:leading-[1.4] font-semibold">
             ${data.question}
         </h2>
         ${selectionHint}
-        <div class="hidden md:block w-12 h-[2px] bg-clinical-border/60 mt-6 rounded-full"></div>
+        <div class="hidden md:block w-12 h-[2px] bg-clinical-border/60 mt-8 rounded-full"></div>
     </div>
-    <div class="w-full md:w-[55%] flex flex-col gap-0">
-        <div id="options-${data.id}" class="flex flex-col gap-2 w-full mb-4">
+    <div class="w-full md:w-[50%] lg:w-[45%] flex flex-col gap-0">
+        <div id="options-${data.id}" class="flex flex-col gap-2 md:gap-3 w-full mb-6">
             ${optionsHtml}
         </div>
         <div class="w-full mb-6">
-            <textarea id="detail-${data.id}" class="intimate-textarea w-full pt-3 pb-2 text-sm font-sans" rows="2" placeholder="Si querés, podés profundizar acá..." oninput="autoResizeTextarea(this); updateDetail('${data.id}', this.value)">${savedState.detail}</textarea>
+            <textarea id="detail-${data.id}" class="intimate-textarea w-full pt-3 pb-2 text-[14px] md:text-[15px] font-sans" rows="2" placeholder="Si querés, podés profundizar acá..." oninput="autoResizeTextarea(this); updateDetail('${data.id}', this.value)">${savedState.detail}</textarea>
         </div>
-        <div class="flex items-center justify-between w-full pt-1">
+        <div class="flex items-center justify-between w-full pt-2">
             <button onclick="navigateTo(currentIndex - 1)" class="text-clinical-taupe hover:text-clinical-slate text-[11px] md:text-xs uppercase tracking-[0.15em] transition-colors font-bold">
                 Volver
             </button>
@@ -509,10 +521,10 @@ return `
 
 function buildTransition(data){
 return `
-<div id="slide-content" class="slide-container w-full max-w-2xl flex flex-col justify-center items-center text-center">
+<div id="slide-content" class="slide-container w-full max-w-4xl flex flex-col justify-center items-center text-center px-4 md:px-8">
     ${getSeparatorHtml()}
-    <div class="my-6 md:my-10">
-        <p class="font-serif text-xl md:text-3xl text-clinical-slate font-semibold leading-relaxed max-w-2xl mx-auto">
+    <div class="my-6 md:my-10 w-full">
+        <p class="font-serif text-xl md:text-[26px] lg:text-[30px] text-clinical-slate font-medium leading-relaxed md:leading-[1.5] max-w-3xl mx-auto">
             ${data.text}
         </p>
     </div>
@@ -526,15 +538,15 @@ return `
 
 function buildOutro(){
 return `
-<div id="slide-content" class="slide-container w-full max-w-2xl flex flex-col justify-center items-center text-center">
-    <h2 class="font-serif text-3xl md:text-4xl text-clinical-slate mb-5 font-semibold mt-4">
+<div id="slide-content" class="slide-container w-full max-w-3xl flex flex-col justify-center items-center text-center px-4">
+    <h2 class="font-serif text-3xl md:text-4xl lg:text-5xl text-clinical-slate mb-6 md:mb-8 font-semibold mt-4">
         ¡Muchas gracias por tu tiempo y tus respuestas!
     </h2>
-    <p class="font-serif italic text-lg md:text-xl text-clinical-taupe mb-12 max-w-md font-medium leading-relaxed">
+    <p class="font-serif italic text-lg md:text-xl text-clinical-taupe mb-12 md:mb-16 max-w-2xl font-medium leading-relaxed md:leading-loose">
         Valoro enormemente tu honestidad y tu disposición. Cada comentario ayuda a construir un espacio seguro, cuidado y adaptado a tus necesidades para acercarnos a una vida más plena.
     </p>
     <div class="flex flex-col items-center">
-        <button onclick="resetExperience()" class="group text-clinical-slate hover:text-clinical-taupe transition-colors duration-300 font-sans tracking-[0.15em] uppercase text-xs font-bold">
+        <button onclick="resetExperience()" class="group text-clinical-slate hover:text-clinical-taupe transition-colors duration-300 font-sans tracking-[0.15em] uppercase text-xs md:text-sm font-bold">
             Volver al inicio
             <span class="block w-0 group-hover:w-full h-[1.5px] bg-clinical-slate transition-all duration-300 mt-2 mx-auto"></span>
         </button>
