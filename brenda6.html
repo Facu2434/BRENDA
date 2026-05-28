@@ -158,18 +158,15 @@
 <body class="w-full flex flex-col relative min-h-screen">
 
    <picture id="bg-wrapper">
-
     <source
         media="(max-width: 768px) and (orientation: portrait)"
         srcset="fondo-mobile.png"
     >
-
     <img
         src="fondo.png"
         alt=""
         id="bg-image"
     >
-
 </picture>
 
     <div id="progress-container"
@@ -198,13 +195,104 @@ const getSeparatorHtml = () => `
 const experienceFlow = [
 {
     type:'intro',
-    title:'Caminos hacia adentro',
-    welcome:'Un espacio seguro y confidencial para observar la forma en que habitamos nuestras emociones y vínculos.',
+    title:'Bienvenido a este espacio',
+    welcome:'Un lugar seguro y confidencial para observar la forma en que habitamos nuestras emociones y vínculos.',
     notes:[
-        'Completamente anónimo.',
-        'No hay respuestas correctas.',
-        'Tomate el tiempo que necesites.'
+        'Antes de empezar, te invito a hacer una pausa: Inhalá en 4 segundos, retené 4 segundos y exhalá lentamente en 6.',
+        'El objetivo es comprender cómo las exigencias sobre "ser un verdadero varón" impactan en tu salud psicológica y tus vínculos.',
+        'Es 100% anónimo: No registramos nombres ni datos que puedan identificarte.',
+        'No hay respuestas correctas ni incorrectas: Nos interesa tu experiencia real, sin filtros.',
+        'Tu honestidad ayuda a construir herramientas terapéuticas más empáticas y efectivas.'
     ]
+},
+{
+    type:'question',
+    id:'q_regulacion_1',
+    block:'Regulación emocional',
+    question:'Cuando pasás por un momento difícil, de mucha angustia, estrés o tristeza, ¿qué solés hacer?',
+    multiple:true,
+    options:[
+        'Intento resolverlo solo y no decir nada para no preocupar a nadie',
+        'Trato de distraerme con el trabajo, gimnasio o actividades para no pensar',
+        'Me guardo lo que siento hasta que se me pasa o "exploto"',
+        'Busco a alguien de confianza para hablar de lo que me pasa',
+        'Consumo alcohol, tabaco u otras sustancias para bajar la intensidad',
+        'Otra opción'
+    ]
+},
+{
+    type:'question',
+    id:'q_regulacion_2',
+    block:'Regulación emocional',
+    question:'¿Con qué frecuencia sentís que tenés que mostrarte "fuerte" o en control, incluso cuando por dentro estás desbordado o asustado?',
+    multiple:false,
+    options:[
+        'Siempre o casi siempre',
+        'Muchas veces',
+        'A veces',
+        'Raras veces o nunca'
+    ]
+},
+{
+    type:'question',
+    id:'q_regulacion_3',
+    block:'Regulación emocional',
+    question:'¿Qué tan fácil o difícil te resulta identificar exactamente qué emoción estás sintiendo (ej. distinguir si es tristeza, miedo o frustración, y no solo "bronca")?',
+    multiple:false,
+    options:[
+        'Muy fácil',
+        'Fácil',
+        'Difícil',
+        'Muy difícil'
+    ]
+},
+{
+    type:'transition',
+    text:'Aislarse emocionalmente es una respuesta común, pero contar con espacios seguros hace una gran diferencia.'
+},
+{
+    type:'question',
+    id:'q_vinculos_1',
+    block:'Red de Apoyo y Vínculos',
+    question:'Si hoy tuvieras un problema personal grave (económico, familiar o de salud mental), ¿a quién acudirías en primer lugar para buscar apoyo?',
+    multiple:false,
+    options:[
+        'A mi pareja (si la tenés)',
+        'A un amigo varón',
+        'A una amiga mujer',
+        'A un familiar (madre, padre, hermanos, etc.)',
+        'A un/a profesional de la salud mental',
+        'A nadie, me lo guardaría para mí'
+    ]
+},
+{
+    type:'question',
+    id:'q_vinculos_2',
+    block:'Red de Apoyo y Vínculos',
+    question:'Pensando en tus amigos varones más cercanos, ¿con qué frecuencia hablan de temas profundos, miedos, inseguridades o crisis personales?',
+    multiple:false,
+    options:[
+        'Seguido (es un espacio donde podemos mostrarnos vulnerables)',
+        'A veces (hablamos de cosas serias, pero sin profundizar demasiado)',
+        'Casi nunca (los encuentros son más para distraernos)',
+        'Nunca'
+    ]
+},
+{
+    type:'question',
+    id:'q_vinculos_3',
+    block:'Red de Apoyo y Vínculos',
+    question:'¿Alguna vez evitaste contarle un problema a un amigo varón por miedo a ser juzgado, parecer "débil" o incomodarlo?',
+    multiple:false,
+    options:[
+        'Sí, me pasó muchas veces',
+        'Sí, me pasó alguna vez',
+        'No, nunca me pasó'
+    ]
+},
+{
+    type:'transition',
+    text:'A veces, cargar con los mandatos ajenos nos aleja de la forma en la que realmente queremos vivir.'
 },
 {
     type:'question',
@@ -237,98 +325,56 @@ const experienceFlow = [
 },
 {
     type:'transition',
-    text:'A veces, cargar con las expectativas ajenas nos aleja de la vida que queremos.'
+    text:'Reflexionar sobre nuestra salud mental nos abre puertas a nuevas herramientas de bienestar.'
 },
 {
     type:'question',
-    id:'q_miedos_1',
-    block:'Miedos',
-    question:'¿Qué miedo aparece más seguido en tu vida cotidiana?',
+    id:'q_terapia_1',
+    block:'Espacio Terapéutico',
+    question:'¿Alguna vez realizaste o estás realizando actualmente un proceso de terapia psicológica basada en evidencia?',
     multiple:false,
     options:[
-        'Fracasar',
-        'Quedarme solo',
-        'Perder el control',
-        'Decepcionar a otros',
-        'No saber manejar conflictos'
+        'Sí, estoy en terapia actualmente',
+        'Sí, hice terapia en el pasado pero ahora no',
+        'No, nunca hice pero me interesaría',
+        'No, y tampoco considero que lo necesite'
     ]
 },
 {
     type:'question',
-    id:'q_miedos_2',
-    block:'Miedos',
-    question:'¿Qué hacés normalmente cuando algo emocional te supera?',
-    multiple:true,
-    options:[
-        'Me aislo',
-        'Me distraigo',
-        'Me enojo',
-        'Sigo funcionando como si nada',
-        'Busco hablarlo'
-    ]
-},
-{
-    type:'transition',
-    text:'Evitar lo que sentimos puede darnos alivio temporal, pero los vínculos son el espejo donde más nos reflejamos.'
-},
-{
-    type:'question',
-    id:'q_vinculos_1',
-    block:'Vínculos',
-    question:'¿Qué suele costarte más en tus relaciones?',
-    multiple:true,
-    options:[
-        'Expresar emociones',
-        'Pedir ayuda',
-        'Poner límites',
-        'Escuchar sin intentar resolver',
-        'Afrontar conflictos'
-    ]
-},
-{
-    type:'question',
-    id:'q_vinculos_2',
-    block:'Vínculos',
-    question:'¿Cómo reaccionás frente a conversaciones incómodas?',
+    id:'q_taller_1',
+    block:'Espacios Grupales',
+    question:'¿Qué tan viable te resultaría sumarte a un taller VIRTUAL y QUINCENAL junto a otros varones para trabajar regulación emocional y revisar creencias sobre el "ser varón"?',
     multiple:false,
     options:[
-        'Las evito',
-        'Cambio de tema',
-        'Me cierro',
-        'Exploto',
-        'Intento hablarlas'
-    ]
-},
-{
-    type:'transition',
-    text:'Reconocer nuestra vulnerabilidad es el primer paso para poder habitarla con amabilidad.'
-},
-{
-    type:'question',
-    id:'q_emocional_1',
-    block:'Mundo emocional',
-    question:'¿Qué emoción sentís más difícil de expresar?',
-    multiple:false,
-    options:[
-        'Tristeza',
-        'Miedo',
-        'Afecto',
-        'Culpa',
-        'Vulnerabilidad'
+        'Muy viable / Me re interesaría',
+        'Viable, pero dependería de los horarios o el costo',
+        'Poco viable / Prefiero lo presencial',
+        'Nada viable: No participaría'
     ]
 },
 {
     type:'question',
-    id:'q_emocional_2',
-    block:'Mundo emocional',
-    question:'¿Qué hacés con lo que sentís cuando no sabés cómo expresarlo?',
+    id:'q_taller_2',
+    block:'Espacios Grupales',
+    question:'Si te interesaría sumarte a este espacio virtual, ¿qué días y horarios te quedarían mejor?',
     multiple:true,
     options:[
-        'Lo guardo',
-        'Me desconecto',
-        'Trabajo más',
-        'Me enojo',
-        'Intento escribir o hablar'
+        'Días de semana por la tarde/noche (ej. 19 a 21 hs)',
+        'Sábados por la mañana',
+        'Sábados por la tarde'
+    ]
+},
+{
+    type:'question',
+    id:'q_taller_3',
+    block:'Espacios Grupales',
+    question:'¿Considerás que la presencia de un co-terapeuta varón en el espacio grupal aportaría a tu comodidad o proceso terapéutico?',
+    multiple:false,
+    options:[
+        'Sí, me sentiría más cómodo',
+        'Me es indiferente / Me da igual',
+        'Prefiero que sea coordinado únicamente por una terapeuta mujer'
     ]
 },
 {
@@ -482,10 +528,10 @@ function buildOutro(){
 return `
 <div id="slide-content" class="slide-container w-full max-w-2xl flex flex-col justify-center items-center text-center">
     <h2 class="font-serif text-3xl md:text-4xl text-clinical-slate mb-5 font-semibold mt-4">
-        Gracias por este espacio.
+        ¡Muchas gracias por tu tiempo y tus respuestas!
     </h2>
     <p class="font-serif italic text-lg md:text-xl text-clinical-taupe mb-12 max-w-md font-medium leading-relaxed">
-        Mirar hacia adentro es un acto de valentía y el primer paso hacia una vida más conectada con lo que valoramos.
+        Valoro enormemente tu honestidad y tu disposición. Cada comentario ayuda a construir un espacio seguro, cuidado y adaptado a tus necesidades para acercarnos a una vida más plena.
     </p>
     <div class="flex flex-col items-center">
         <button onclick="resetExperience()" class="group text-clinical-slate hover:text-clinical-taupe transition-colors duration-300 font-sans tracking-[0.15em] uppercase text-xs font-bold">
